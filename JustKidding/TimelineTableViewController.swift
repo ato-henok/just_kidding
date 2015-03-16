@@ -9,14 +9,48 @@
 import UIKit
 import Parse
 
-class TimelineTableViewController: UIViewController {
-    /*
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+class TimelineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var timelineData:NSMutableArray = NSMutableArray()
+   
+    @IBOutlet var tableView: UITableView!
+    
+    // Load
+    
+    func loadData(){
+        // Initially, remove what is already there
+        timelineData.removeAllObjects()
+        
+        var stageQuery = PFQuery(className: "Jokes")
+        stageQuery.whereKey("isOnStage", equalTo: true)
+        stageQuery.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if error == nil {
+                // The find succeeded.
+                println("\(objects.count) jokes on stage.")
+                // Do something with the found objects
+                if let objects = objects as? [PFObject] {
+                    for object in objects {
+                        self.timelineData.addObject(object)
+                    }
+                }
+                
+                self.tableView.reloadData()
+            } else {
+                // Log details of the failure
+                println("Error: \(error) \(error.userInfo!)")
+            }
+        }
+        
+        
     }
-    */
+    
     
     override func viewDidAppear(animated: Bool) {
+        
+        // Call the data loader
+        self.loadData()
+        
         if(PFUser.currentUser() == nil){
             
             //###########################################################################
@@ -152,6 +186,13 @@ class TimelineTableViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "groupcell")
+        
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -164,8 +205,51 @@ class TimelineTableViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    {
+        
+        return 1
+    }
+    
 
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return timelineData.count
+    }
+    
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell:EntryTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as EntryTableViewCell
+    
+        let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as PFObject
+        
+        cell.jokeLabel.text = joke.objectForKey("joke") as NSString
+        cell.usernameLabel.text = joke.objectForKey("senderName") as NSString
+     /*
+        var date:NSDate = joke.objectForKey("createdAt") as NSDate
+        var dateFormatter = NSDateFormatter()
+        cell.dateLabel.text = dateFormatter.stringFromDate(date)
 
+        
+        var likesArray = joke.objectForKey("likersArray")
+        var dislikesArray = joke.objectForKey("dislikersArray")
+        var net = likesArray.count - dislikesArray.count
+        
+        cell.likesCountLabel.text = String(net)
+
+        */
+        
+    
+    return cell
+    }
+    
+    
+/*
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+*/
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell

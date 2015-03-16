@@ -61,6 +61,8 @@ class ComposeTableViewController: UIViewController {
                 }
             }
             
+            self.navigationController?.popToRootViewControllerAnimated(true)
+            
             
         } else {
             // Show the signup or login screen

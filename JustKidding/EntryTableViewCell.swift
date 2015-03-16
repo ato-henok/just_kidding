@@ -10,6 +10,11 @@ import UIKit
 
 class EntryTableViewCell: UITableViewCell {
 
+    @IBOutlet var dateLabel: UILabel! = UILabel()
+    @IBOutlet var usernameLabel: UILabel! = UILabel()
+    @IBOutlet var likesCountLabel: UILabel! = UILabel()
+    @IBOutlet var jokeLabel: UITextView! = UITextView()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
