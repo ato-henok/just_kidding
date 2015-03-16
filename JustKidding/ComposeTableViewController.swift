@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class ComposeTableViewController: UIViewController {
 
@@ -36,7 +37,43 @@ class ComposeTableViewController: UIViewController {
 
 
     @IBAction func sendEntry(sender: AnyObject) {
+        
+        var currentUser = PFUser.currentUser()
+        if currentUser != nil {
+            // Do stuff with the user
+            
+            //Create Joke object and set initial values
+            
+            var joke = PFObject(className: "Jokes")
+            joke["isOnStage"] = false
+            joke["joke"] = entryTextView.text
+            joke["redFlags"] = 0
+            joke["senderId"] = currentUser.objectId
+            joke["senderName"] = currentUser.username
+            joke.saveInBackgroundWithBlock {
+                (success: Bool, error: NSError!) -> Void in
+                if (success) {
+                    // The entry has been saved
+                    println("Joke Saved!")
+                } else {
+                    // There was a problem, check error.description
+                    println(error)
+                }
+            }
+            
+            
+        } else {
+            // Show the signup or login screen
+        }
+        
+        
+        
+        
+        
+        
     }
+    
+    
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
