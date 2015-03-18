@@ -8,8 +8,8 @@
 
 import UIKit
 
-class EntryTableViewCell: UITableViewCell {
-
+class CrowdCell: UITableViewCell {
+    
     @IBOutlet var dateLabel: UILabel! = UILabel()
     @IBOutlet var usernameLabel: UILabel! = UILabel()
     @IBOutlet var likesCountLabel: UILabel! = UILabel()
@@ -19,11 +19,11 @@ class EntryTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
 }

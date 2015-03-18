@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class ComposeTableViewController: UIViewController {
+class ComposeTableViewController: UIViewController, UITextViewDelegate {
 
     
     @IBOutlet var entryTextView: UITextView! = UITextView()
@@ -67,14 +67,19 @@ class ComposeTableViewController: UIViewController {
         } else {
             // Show the signup or login screen
         }
-        
-        
-        
-        
-        
-        
     }
+  
     
+    func textView(textView:UITextView!, shouldChangeTextInRange range:NSRange, replacementText text: String!) -> Bool{
+        
+        var newLength:Int = (textView.text as NSString).length + (text as NSString).length - range.length
+        var remainingChar:Int = 240 - newLength
+        
+        charRemaining.text = "\(remainingChar)"
+        
+        return (newLength > 240) ? false : true
+    }
+
     
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

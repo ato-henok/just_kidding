@@ -33,6 +33,10 @@
 		9424DEC71AB67D580053B6A9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9424DEC61AB67D580053B6A9 /* libsqlite3.dylib */; };
 		9424DEC91AB67DAB0053B6A9 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9424DEC81AB67DAB0053B6A9 /* Accounts.framework */; };
 		9424DECB1AB67DB30053B6A9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9424DECA1AB67DB30053B6A9 /* Social.framework */; };
+		9469BDA41AB9547400CD4CD5 /* CrowdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9469BDA31AB9547400CD4CD5 /* CrowdViewController.swift */; };
+		9469BDA61AB955E200CD4CD5 /* CrowdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9469BDA51AB955E200CD4CD5 /* CrowdCell.swift */; };
+		94EF73AD1AB91C7B008F8D76 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EF73AC1AB91C7B008F8D76 /* CommentsViewController.swift */; };
+		94EF73B11AB92369008F8D76 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EF73B01AB92369008F8D76 /* CommentCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,10 @@
 		9424DEC61AB67D580053B6A9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		9424DEC81AB67DAB0053B6A9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		9424DECA1AB67DB30053B6A9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		9469BDA31AB9547400CD4CD5 /* CrowdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrowdViewController.swift; sourceTree = "<group>"; };
+		9469BDA51AB955E200CD4CD5 /* CrowdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrowdCell.swift; sourceTree = "<group>"; };
+		94EF73AC1AB91C7B008F8D76 /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		94EF73B01AB92369008F8D76 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentCell.swift; path = ../CommentCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,12 +146,16 @@
 				9424DEA31AB6363C0053B6A9 /* TimelineTableViewController.swift */,
 				9424DEA71AB644290053B6A9 /* EntryTableViewCell.swift */,
 				9424DEA51AB636AE0053B6A9 /* ComposeTableViewController.swift */,
+				9469BDA31AB9547400CD4CD5 /* CrowdViewController.swift */,
+				9469BDA51AB955E200CD4CD5 /* CrowdCell.swift */,
 				9424DE851AB62C4F0053B6A9 /* ViewController.swift */,
 				9424DE871AB62C4F0053B6A9 /* Main.storyboard */,
 				9424DE8A1AB62C4F0053B6A9 /* Images.xcassets */,
 				9424DE8C1AB62C4F0053B6A9 /* LaunchScreen.xib */,
-				9424DEA91AB67C110053B6A9 /* libs */,
+				94EF73AC1AB91C7B008F8D76 /* CommentsViewController.swift */,
+				94EF73B01AB92369008F8D76 /* CommentCell.swift */,
 				9424DE811AB62C4F0053B6A9 /* Supporting Files */,
+				9424DEA91AB67C110053B6A9 /* libs */,
 			);
 			path = JustKidding;
 			sourceTree = "<group>";
@@ -299,9 +311,13 @@
 			files = (
 				9424DEA61AB636AE0053B6A9 /* ComposeTableViewController.swift in Sources */,
 				9424DEA81AB644290053B6A9 /* EntryTableViewCell.swift in Sources */,
+				9469BDA41AB9547400CD4CD5 /* CrowdViewController.swift in Sources */,
+				94EF73AD1AB91C7B008F8D76 /* CommentsViewController.swift in Sources */,
 				9424DE861AB62C4F0053B6A9 /* ViewController.swift in Sources */,
+				9469BDA61AB955E200CD4CD5 /* CrowdCell.swift in Sources */,
 				9424DEA41AB6363C0053B6A9 /* TimelineTableViewController.swift in Sources */,
 				9424DE841AB62C4F0053B6A9 /* AppDelegate.swift in Sources */,
+				94EF73B11AB92369008F8D76 /* CommentCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +517,7 @@
 				9424DE9F1AB62C4F0053B6A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9424DEA01AB62C4F0053B6A9 /* Build configuration list for PBXNativeTarget "JustKiddingTests" */ = {
 			isa = XCConfigurationList;
@@ -509,6 +526,7 @@
 				9424DEA21AB62C4F0053B6A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class TimelineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var timelineData:NSMutableArray = NSMutableArray()
     //var jokeObj:PFObject = PFObject()
@@ -24,12 +24,11 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         timelineData.removeAllObjects()
         
         var stageQuery = PFQuery(className: "Jokes")
-        stageQuery.whereKey("isOnStage", equalTo: true)
         stageQuery.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects.count) jokes on stage.")
+                println("\(objects.count) jokes on crowd.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -60,7 +59,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to post", preferredStyle: UIAlertControllerStyle.Alert)
             
-
+            
             alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
                 alertAction in
                 
@@ -183,26 +182,26 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             
             
-      
+            
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "groupcell")
+        self.tableView.registerClass(CrowdCell.self, forCellReuseIdentifier: "groupcell")
         
         
         tableView.delegate = self
         tableView.dataSource = self
         
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -215,36 +214,36 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         return 1
     }
     
-
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return timelineData.count
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:EntryTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as EntryTableViewCell
-    
+        let cell:CrowdCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as CrowdCell
+        
         let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as PFObject
         
         cell.jokeLabel.text = joke.objectForKey("joke") as NSString
         cell.usernameLabel.text = joke.objectForKey("senderName") as NSString
-     
+        
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt)
-
-       /*
+        
+        /*
         var likesArray = joke.objectForKey("likersArray")
         var dislikesArray = joke.objectForKey("dislikersArray")
         var net = likesArray.count - dislikesArray.count
         
         cell.likesCountLabel.text = String(net)
-
+        
         */
         
-    
-    return cell
+        
+        return cell
     }
     
     /*
@@ -261,7 +260,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     }
     */
-  
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         
@@ -269,75 +268,75 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             let controller = segue.destinationViewController as CommentsViewController
             controller.jokeOfComment = self.jokeObj
-         
+            
             
         }
     }
     
-
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
+        
         self.jokeObj = self.timelineData.objectAtIndex(indexPath.row) as PFObject
         
         self.performSegueWithIdentifier("showComments", sender: self)
         
     }
     
-   
-
+    
+    
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
-
-        // Configure the cell...
-
-        return cell
+    let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
+    
+    // Configure the cell...
+    
+    return cell
     }
     */
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    // Return NO if you do not want the specified item to be editable.
+    return true
     }
     */
-
+    
     /*
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    if editingStyle == .Delete {
+    // Delete the row from the data source
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    } else if editingStyle == .Insert {
+    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
     }
     */
-
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+    
     }
     */
-
+    
     /*
     // Override to support conditional rearranging of the table view.
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
+    // Return NO if you do not want the item to be re-orderable.
+    return true
     }
     */
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
