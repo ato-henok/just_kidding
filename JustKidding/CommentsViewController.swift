@@ -99,14 +99,9 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         cell.dateLabel.text = dateFormatter.stringFromDate(comment.createdAt) as NSString
 
-        /*
-        var likesArray = joke.objectForKey("likersArray")
-        var dislikesArray = joke.objectForKey("dislikersArray")
-        var net = likesArray.count - dislikesArray.count
+        var likesArray = comment.objectForKey("likersArray") as NSMutableArray
         
-        cell.likesCountLabel.text = String(net)
-        
-        */
+        cell.likesLabel.text = String(likesArray.count)
         
         
         return cell

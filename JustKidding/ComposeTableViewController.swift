@@ -48,6 +48,8 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             joke["isOnStage"] = false
             joke["joke"] = entryTextView.text
             joke["redFlags"] = 0
+            joke["likersArray"] = []
+            joke["dislikersArray"] = []
             joke["senderId"] = currentUser.objectId
             joke["senderName"] = currentUser.username
             joke.saveInBackgroundWithBlock {

@@ -16,6 +16,7 @@ class CommentCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel! = UILabel()
     @IBOutlet var usernameLabel: UILabel! = UILabel()
     @IBOutlet var commentLabel: UILabel! = UILabel()
+    @IBOutlet var likesLabel: UILabel! = UILabel()
     
     override func awakeFromNib() {
         super.awakeFromNib()

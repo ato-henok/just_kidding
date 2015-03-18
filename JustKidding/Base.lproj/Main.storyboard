@@ -273,12 +273,20 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ic8-YW-hIC">
+                                                    <rect key="frame" x="253" y="64" width="59" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="commentLabel" destination="yfV-9Y-Ke9" id="RRj-Pe-eCD"/>
                                             <outlet property="dateLabel" destination="Dfw-mV-4oE" id="jK5-Z4-X9M"/>
+                                            <outlet property="likesLabel" destination="ic8-YW-hIC" id="zWA-1g-gfH"/>
                                             <outlet property="usernameLabel" destination="je6-t8-ufg" id="aVJ-kn-8cX"/>
                                         </connections>
                                     </tableViewCell>

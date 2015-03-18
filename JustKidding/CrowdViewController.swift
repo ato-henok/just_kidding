@@ -23,8 +23,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Initially, remove what is already there
         timelineData.removeAllObjects()
         
-        var stageQuery = PFQuery(className: "Jokes")
-        stageQuery.findObjectsInBackgroundWithBlock {
+        var query = PFQuery(className: "Jokes")
+        query.orderByDescending("createdAt")
+        query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
                 // The find succeeded.
@@ -233,14 +234,12 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         dateFormatter.dateFormat = "dd.MM.yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt)
         
-        /*
-        var likesArray = joke.objectForKey("likersArray")
-        var dislikesArray = joke.objectForKey("dislikersArray")
+        var likesArray = joke.objectForKey("likersArray") as NSMutableArray
+        var dislikesArray = joke.objectForKey("dislikersArray") as NSMutableArray
+        
         var net = likesArray.count - dislikesArray.count
         
         cell.likesCountLabel.text = String(net)
-        
-        */
         
         
         return cell
