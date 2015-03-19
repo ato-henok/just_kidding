@@ -15,6 +15,10 @@ class CrowdCell: UITableViewCell {
     @IBOutlet var likesCountLabel: UILabel! = UILabel()
     @IBOutlet var jokeLabel: UILabel! = UILabel()
     
+    @IBOutlet var roseBtn: UIButton! = UIButton()
+    @IBOutlet var tomatoBtn: UIButton! = UIButton()
+    @IBOutlet var favBtn: UIButton! = UIButton()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

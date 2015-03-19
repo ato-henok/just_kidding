@@ -12,6 +12,8 @@ import Parse
 class TimelineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var timelineData:NSMutableArray = NSMutableArray()
+    var favArray:NSMutableArray = NSMutableArray()
+    
     //var jokeObj:PFObject = PFObject()
     var jokeObj = PFObject(className: "Jokes")
     
@@ -48,11 +50,39 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
     }
     
+    func loadFavs(){
+        favArray.removeAllObjects()
+        
+        var relation = PFUser.currentUser().relationForKey("favoriteJokes") as PFRelation
+        
+        var query:PFQuery = relation.query()
+        
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if error == nil {
+                // The find succeeded.
+                println("\(objects.count) user favorites.")
+                // Do something with the found objects
+                if let objects = objects as? [PFObject] {
+                    for object in objects {
+                        self.favArray.addObject(object.objectId)
+                    }
+                }
+            } else {
+                // Log details of the failure
+                println("Error: \(error) \(error.userInfo!)")
+            }
+        }
+
+    }
+    
     
     override func viewDidAppear(animated: Bool) {
         
-        // Call the data loader
+        // Load cell Data
+        
         self.loadData()
+        self.loadFavs()
         
         if(PFUser.currentUser() == nil){
             
@@ -250,7 +280,11 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         let rose_empty = UIImage(named: "rose_empty.png") as UIImage!
         let tomato_selected = UIImage(named: "tomato_selected.png") as UIImage!
         let tomato_empty = UIImage(named: "tomato_empty.png") as UIImage!
+        let fav_empty = UIImage(named: "favorite_empty.png") as UIImage!
+        let fav_selected = UIImage(named: "favorite_selected.png") as UIImage!
       
+        // Update the Like and Dislike icons
+        
         if(likesArray.containsObject(currentUser.objectId)){
             
             cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
@@ -262,6 +296,14 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
             cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
         }
+        
+        // Update favorite icon
+        
+        if(self.favArray.containsObject(joke.objectId)){
+            cell.favBtn.setBackgroundImage(fav_selected, forState: .Normal)
+        }else{
+            cell.favBtn.setBackgroundImage(fav_empty, forState: .Normal)
+        }
       
         
         
@@ -272,6 +314,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Tomato button clicked
         cell.tomatoBtn.tag = indexPath.row
         cell.tomatoBtn.addTarget(self, action: "tomatoBtnClicked:", forControlEvents: .TouchUpInside)
+        
+        // Favorite button clicked
+        cell.favBtn.tag = indexPath.row
+        cell.favBtn.addTarget(self, action: "favBtnClicked:", forControlEvents: .TouchUpInside)
    
         
         
@@ -279,6 +325,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     return cell
     }
+    
+    //########################################################
+    //functions for Like, Dislke, and Favorite buttons
     
     func roseBtnClicked(sender: UIButton!) {
       
@@ -349,8 +398,50 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
         self.tableView.reloadData()
     }
+    
+    func favBtnClicked(sender: UIButton!) {
+        
+        println("Favorite Btn Clicked")
+        
+        
+        var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
+        var jokeObjectId = joke.objectId
+        
+        var relation = PFUser.currentUser().relationForKey("favoriteJokes") as PFRelation
+        
+        // Check if the joke is already in favorited
+        
+        if(self.favArray.containsObject(jokeObjectId)){
+            relation.removeObject(joke)
+            PFUser.currentUser().saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                if(error == nil){
+                    println("_Joke un-favorited")
+                }else{
+                    println("_Un-favorite error")
+                }
+            })
+            
+        }else{
+            relation.addObject(joke)
+            PFUser.currentUser().saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                if(error == nil){
+                    println("_Joke favorited")
+                   
+                }else{
+                    println("_Favorite error")
+                }
+            })
+        }
+        
+        self.tableView.reloadData()
+    }
+    //########################################################
 
 
+
+    //########################################################
+    //Preparation and sending of data to CommentsViewController
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         
@@ -371,6 +462,8 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         self.performSegueWithIdentifier("showComments", sender: self)
         
     }
+    
+    //########################################################
     
    
 

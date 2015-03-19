@@ -13,7 +13,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="Zfk-JF-N3N"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="profile.png" id="Zfk-JF-N3N"/>
                     <navigationItem key="navigationItem" id="Zqw-h6-zg7"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="prI-q8-6bt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -77,8 +77,15 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6xA-AF-ij1">
                                                     <rect key="frame" x="192" y="110" width="34" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <state key="normal" title="T">
+                                                    <state key="normal" backgroundImage="tomato_empty.png">
+                                                        <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="qcW-Io-YyY">
+                                                    <rect key="frame" x="143" y="110" width="34" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" backgroundImage="rose_empty.png">
                                                         <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -86,18 +93,8 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="YTT-N2-cAg">
                                                     <rect key="frame" x="242" y="110" width="34" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <state key="normal" title="F">
+                                                    <state key="normal" backgroundImage="favorite_empty.png">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="qcW-Io-YyY">
-                                                    <rect key="frame" x="143" y="110" width="34" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <state key="normal" title="R">
-                                                        <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
@@ -107,8 +104,11 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="dateLabel" destination="TBO-xi-u6p" id="4fr-rB-Kak"/>
+                                            <outlet property="favBtn" destination="YTT-N2-cAg" id="N2O-mv-U47"/>
                                             <outlet property="jokeLabel" destination="wVJ-cz-TGW" id="Dby-0f-U4o"/>
                                             <outlet property="likesCountLabel" destination="RUA-ag-cd5" id="ntw-Zb-RBh"/>
+                                            <outlet property="roseBtn" destination="qcW-Io-YyY" id="VdO-ug-NEK"/>
+                                            <outlet property="tomatoBtn" destination="6xA-AF-ij1" id="XVE-2E-B7N"/>
                                             <outlet property="usernameLabel" destination="Tb4-gF-iXV" id="bYQ-P9-Fn6"/>
                                         </connections>
                                     </tableViewCell>
@@ -264,7 +264,7 @@
         <scene sceneID="wZF-ZU-Rnc">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qJf-BH-23t" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stage" id="0Ks-yc-9sa"/>
+                    <tabBarItem key="tabBarItem" title="Stage" image="stage.png" id="0Ks-yc-9sa"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="W1e-d4-wXZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -410,7 +410,7 @@
         <scene sceneID="9Jf-ks-PyV">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JJU-J6-R1l" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Crowd" id="TBT-ib-txR"/>
+                    <tabBarItem key="tabBarItem" title="Crowd" image="crowd.png" id="TBT-ib-txR"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lZP-WU-fBw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -427,8 +427,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="crowd.png" width="32" height="21"/>
         <image name="favorite_empty.png" width="15" height="12"/>
+        <image name="profile.png" width="32" height="21"/>
         <image name="rose_empty.png" width="15" height="12"/>
+        <image name="stage.png" width="32" height="21"/>
         <image name="tomato_empty.png" width="15" height="12"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -437,6 +440,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="rwv-az-Tkm"/>
+        <segue reference="Mde-ke-jlK"/>
     </inferredMetricsTieBreakers>
 </document>
