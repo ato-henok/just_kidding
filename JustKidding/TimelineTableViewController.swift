@@ -236,33 +236,121 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt)
 
        
-        var likesArray = joke.objectForKey("likersArray") as NSMutableArray
-        var dislikesArray = joke.objectForKey("dislikersArray") as NSMutableArray
+        var likesArray = joke.objectForKey("likersArray") as NSArray
+        var dislikesArray = joke.objectForKey("dislikersArray") as NSArray
        
         var net = likesArray.count - dislikesArray.count
-        
         cell.likesCountLabel.text = String(net)
-
+        
+       
+        
+        var currentUser = PFUser.currentUser()
+        
+        let rose_selected = UIImage(named: "rose_selected.png") as UIImage!
+        let rose_empty = UIImage(named: "rose_empty.png") as UIImage!
+        let tomato_selected = UIImage(named: "tomato_selected.png") as UIImage!
+        let tomato_empty = UIImage(named: "tomato_empty.png") as UIImage!
+      
+        if(likesArray.containsObject(currentUser.objectId)){
+            
+            cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
+            cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+        }else if(dislikesArray.containsObject(currentUser.objectId)){
+            cell.tomatoBtn.setBackgroundImage(tomato_selected, forState: .Normal)
+            cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
+        }else{
+            cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
+            cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+        }
+      
+        
+        
+        // Rose button clicked
+        cell.roseBtn.tag = indexPath.row
+        cell.roseBtn.addTarget(self, action: "roseBtnClicked:", forControlEvents: .TouchUpInside)
+        
+        // Tomato button clicked
+        cell.tomatoBtn.tag = indexPath.row
+        cell.tomatoBtn.addTarget(self, action: "tomatoBtnClicked:", forControlEvents: .TouchUpInside)
+   
+        
+        
         
     
     return cell
     }
     
-    /*
-    -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    
-    if([segue.identifier isEqualToString:@"showUserProfile"]){
-    
-    NSString *userName = self.userName;
-    UserProfileViewController *controller = [segue destinationViewController];
-    controller.senderLabel = userName;
-    }else if([segue.identifier isEqualToString:@"showComments"]){
-    CommentsViewController *controller = [segue destinationViewController];
-    controller.jokeForComment = self.jokeObj;
+    func roseBtnClicked(sender: UIButton!) {
+      
+        var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
+        
+        var likersArray = joke.objectForKey("likersArray") as NSArray
+      
+        var objectId:NSString = PFUser.currentUser().objectId
+        if(!(likersArray.containsObject(objectId))){
+            
+            joke.addObject(objectId, forKey: "likersArray")
+            joke.removeObject(objectId, forKey: "dislikersArray")
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                if(error == nil){
+                    println("_Rose saved")
+                }else{
+                    println("_Rose error")
+                }
+                
+            })
+      
+        }else if((likersArray.containsObject(objectId))){
+            
+            joke.removeObject(objectId, forKey: "likersArray")
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                if(error == nil){
+                    println("_Rose saved")
+                }else{
+                    println("_Rose error")
+                }
+                
+            })
+            
+        }
+        self.tableView.reloadData()
     }
+    
+    func tomatoBtnClicked(sender: UIButton!) {
+   
+        println("Tomato Btn Clicked")
+        
+        var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
+        var dislikersArray = joke.objectForKey("dislikersArray") as NSArray
+        
+        var objectId:NSString = PFUser.currentUser().objectId
+        
+        if(!(dislikersArray.containsObject(objectId))){
+            joke.addObject(objectId, forKey: "dislikersArray")
+            joke.removeObject(objectId, forKey: "likersArray")
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                if(error == nil){
+                    println("Tomato saved")
+                }else{
+                    println("Tomato error")
+                }
+                
+            })
+        }else if((dislikersArray.containsObject(objectId))){
+            joke.removeObject(objectId, forKey: "dislikersArray")
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                if(error == nil){
+                    println("_Tomato saved")
+                }else{
+                    println("_Tomato error")
+                }
+                
+            })
+        }
+        self.tableView.reloadData()
     }
-    */
-  
+
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         
