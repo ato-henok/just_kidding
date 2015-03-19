@@ -117,7 +117,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="tUx-pI-2w2"/>
+                    <navigationItem key="navigationItem" id="tUx-pI-2w2">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Fbm-uf-OAW">
+                            <connections>
+                                <segue destination="3CW-wI-6YX" kind="push" id="xJq-qL-SRs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="IBI-GO-DMR" id="cXs-Ge-o7G"/>
                         <segue destination="cos-ek-7yL" kind="push" identifier="showComments" id="Mde-ke-jlK"/>
@@ -334,12 +340,20 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7rl-fe-DLV">
+                                                    <rect key="frame" x="215" y="64" width="30" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" backgroundImage="like_empty.png">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="commentLabel" destination="yfV-9Y-Ke9" id="RRj-Pe-eCD"/>
                                             <outlet property="dateLabel" destination="Dfw-mV-4oE" id="jK5-Z4-X9M"/>
+                                            <outlet property="likeBtn" destination="7rl-fe-DLV" id="IOj-tG-Nfb"/>
                                             <outlet property="likesLabel" destination="ic8-YW-hIC" id="zWA-1g-gfH"/>
                                             <outlet property="usernameLabel" destination="je6-t8-ufg" id="aVJ-kn-8cX"/>
                                         </connections>
@@ -356,7 +370,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="RQi-7j-N4r"/>
+                    <navigationItem key="navigationItem" id="RQi-7j-N4r">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ch6-NV-WDV">
+                            <connections>
+                                <action selector="addComment:" destination="cos-ek-7yL" id="FFj-Om-fTe"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Ava-S0-GSj" id="g4V-u4-tH4"/>
                     </connections>
@@ -429,6 +449,7 @@
     <resources>
         <image name="crowd.png" width="32" height="21"/>
         <image name="favorite_empty.png" width="15" height="12"/>
+        <image name="like_empty.png" width="15" height="12"/>
         <image name="profile.png" width="32" height="21"/>
         <image name="rose_empty.png" width="15" height="12"/>
         <image name="stage.png" width="32" height="21"/>
@@ -440,6 +461,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Mde-ke-jlK"/>
+        <segue reference="d90-fe-fE4"/>
+        <segue reference="rwv-az-Tkm"/>
     </inferredMetricsTieBreakers>
 </document>

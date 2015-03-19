@@ -23,7 +23,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func loadData(){
         // Initially, remove what is already there
-        timelineData.removeAllObjects()
+        self.timelineData.removeAllObjects()
         
         var query = PFQuery(className: "Jokes")
         query.orderByDescending("createdAt")
@@ -51,7 +51,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func loadFavs(){
-        favArray.removeAllObjects()
+        self.favArray.removeAllObjects()
         
         var relation = PFUser.currentUser().relationForKey("favoriteJokes") as PFRelation
         
@@ -81,7 +81,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Load cell Data
         
         self.loadData()
-        self.loadFavs()
+        if(PFUser.currentUser() != nil){
+            self.loadFavs()
+        }
         
         if(PFUser.currentUser() == nil){
             
@@ -439,7 +441,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         if segue.identifier? == "showComments" {
             
             let controller = segue.destinationViewController as CommentsViewController
-            controller.jokeOfComment = self.jokeObj
+            controller.commentEntry = self.jokeObj
             
             
         }

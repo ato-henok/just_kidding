@@ -10,6 +10,11 @@ import UIKit
 import Parse
 
 class TimelineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+   /*
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    */
     
     var timelineData:NSMutableArray = NSMutableArray()
     var favArray:NSMutableArray = NSMutableArray()
@@ -23,7 +28,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func loadData(){
         // Initially, remove what is already there
-        timelineData.removeAllObjects()
+        self.timelineData.removeAllObjects()
         
         var query = PFQuery(className: "Jokes")
         query.whereKey("isOnStage", equalTo: true)
@@ -51,7 +56,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func loadFavs(){
-        favArray.removeAllObjects()
+        self.favArray.removeAllObjects()
         
         var relation = PFUser.currentUser().relationForKey("favoriteJokes") as PFRelation
         
@@ -82,7 +87,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Load cell Data
         
         self.loadData()
-        self.loadFavs()
+        if(PFUser.currentUser() != nil){
+            self.loadFavs()
+        }
         
         if(PFUser.currentUser() == nil){
             
@@ -331,6 +338,8 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func roseBtnClicked(sender: UIButton!) {
       
+        println("Rose Btn Clicked")
+        
         var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
         
         var likersArray = joke.objectForKey("likersArray") as NSArray
@@ -448,7 +457,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         if segue.identifier? == "showComments" {
             
             let controller = segue.destinationViewController as CommentsViewController
-            controller.jokeOfComment = self.jokeObj
+            controller.commentEntry = self.jokeObj
          
             
         }

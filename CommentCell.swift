@@ -17,6 +17,7 @@ class CommentCell: UITableViewCell {
     @IBOutlet var usernameLabel: UILabel! = UILabel()
     @IBOutlet var commentLabel: UILabel! = UILabel()
     @IBOutlet var likesLabel: UILabel! = UILabel()
+    @IBOutlet var likeBtn: UIButton! = UIButton()
     
     override func awakeFromNib() {
         super.awakeFromNib()
