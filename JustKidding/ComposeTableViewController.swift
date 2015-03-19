@@ -56,7 +56,18 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
                 (success: Bool, error: NSError!) -> Void in
                 if (success) {
                     // The entry has been saved
-                    println("Joke Saved!")
+                    var relation = currentUser.relationForKey("userJokes") as PFRelation
+                    relation.addObject(joke)
+                    currentUser.saveInBackgroundWithBlock {
+                        (success: Bool, error: NSError!) -> Void in
+                        if (success) {
+                            println("Joke Saved and related!")
+                        } else {
+                            // There was a problem, check error.description
+                            println(error)
+                        }
+                    }
+                    
                 } else {
                     // There was a problem, check error.description
                     println(error)
