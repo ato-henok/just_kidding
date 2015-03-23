@@ -216,6 +216,64 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 
                 
             }))
+            
+            // Facebook login
+            alert.addAction(UIAlertAction(title: "Login with Facebook", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let permissions = ["email"]
+                PFFacebookUtils.logInWithPermissions(permissions, {
+                    (user: PFUser!, error: NSError!) -> Void in
+                    if let user = user {
+                        if user.isNew {
+                            println("User signed up and logged in through Facebook!")
+                            
+                            // REQUEST TO FACEBOOK
+                            println("performing request to FB for username and IDF...")
+                            if let session = PFFacebookUtils.session() {
+                                if session.isOpen {
+                                    println("session is open")
+                                    FBRequestConnection.startForMeWithCompletionHandler({ (connection: FBRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
+                                        println("done me request")
+                                        if error != nil {
+                                            println("Error with FB request.")
+                                        } else {
+                                            println("FB request worked.")
+                                            println(result)
+                                            
+                                            
+                                            user.email = result["email"] as NSString
+                                            
+                                            var defaultUsername = result["first_name"] as NSString + "_"
+                                            defaultUsername += result["last_name"] as NSString
+                                            
+                                            user.username = defaultUsername
+                                            user["aboutMe"] = "Say something badass about yourself"
+                                            user.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+                                                if(error == nil){
+                                                    println("Facebook user saved.")
+                                                }else{
+                                                    println("Error saving Facebook user.")
+                                                }
+                                                
+                                            })
+                                        }
+                                    })
+                                }
+                            }
+                    
+                        } else {
+                            println("User logged in through Facebook!")
+                        }
+                    } else {
+                        println("Uh oh. The user cancelled the Facebook login.")
+                    }
+                })
+                
+               }))
+            
+            
+            
             self.presentViewController(alert, animated: true, completion: nil)
             
             //###########################################################################
@@ -294,16 +352,19 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
       
         // Update the Like and Dislike icons
         
-        if(likesArray.containsObject(currentUser.objectId)){
+        if currentUser != nil {
+        
+            if(likesArray.containsObject(currentUser.objectId)){
             
-            cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
-            cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
-        }else if(dislikesArray.containsObject(currentUser.objectId)){
-            cell.tomatoBtn.setBackgroundImage(tomato_selected, forState: .Normal)
-            cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
-        }else{
-            cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
-            cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+                cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
+                cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+            }else if(dislikesArray.containsObject(currentUser.objectId)){
+                cell.tomatoBtn.setBackgroundImage(tomato_selected, forState: .Normal)
+                cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
+            }else{
+                cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
+                cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+            }
         }
         
         // Update favorite icon

@@ -120,7 +120,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             // Load favorites
             self.loadFavData()
         }else{
-            
+            // LOG OUT
+            PFUser.logOut()
+            println("Logged out")
         }
     }
     

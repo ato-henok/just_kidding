@@ -65,6 +65,8 @@
 		94EF73B11AB92369008F8D76 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EF73B01AB92369008F8D76 /* CommentCell.swift */; };
 		94FB11C71ABEA95800B1FFB8 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FB11C61ABEA95800B1FFB8 /* UserProfileViewController.swift */; };
 		94FB11C91ABEAE5E00B1FFB8 /* UserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FB11C81ABEAE5E00B1FFB8 /* UserProfileCell.swift */; };
+		94FB11CC1ABEC93400B1FFB8 /* ObjcBridgingHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FB11CB1ABEC93400B1FFB8 /* ObjcBridgingHeader.m */; };
+		94FB11CE1ABECDE200B1FFB8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FB11CD1ABECDE200B1FFB8 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +142,9 @@
 		94EF73B01AB92369008F8D76 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentCell.swift; path = ../CommentCell.swift; sourceTree = "<group>"; };
 		94FB11C61ABEA95800B1FFB8 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		94FB11C81ABEAE5E00B1FFB8 /* UserProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCell.swift; sourceTree = "<group>"; };
+		94FB11CA1ABEC93200B1FFB8 /* JustKidding-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JustKidding-Bridging-Header.h"; sourceTree = "<group>"; };
+		94FB11CB1ABEC93400B1FFB8 /* ObjcBridgingHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjcBridgingHeader.m; sourceTree = "<group>"; };
+		94FB11CD1ABECDE200B1FFB8 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +157,7 @@
 				9424DEC71AB67D580053B6A9 /* libsqlite3.dylib in Frameworks */,
 				9424DEC51AB67D490053B6A9 /* libz.dylib in Frameworks */,
 				9424DEC31AB67D140053B6A9 /* SystemConfiguration.framework in Frameworks */,
+				94FB11CE1ABECDE200B1FFB8 /* FacebookSDK.framework in Frameworks */,
 				9424DEC11AB67D070053B6A9 /* StoreKit.framework in Frameworks */,
 				9424DEBF1AB67CF80053B6A9 /* Security.framework in Frameworks */,
 				9424DEBD1AB67CEC0053B6A9 /* QuartzCore.framework in Frameworks */,
@@ -217,6 +223,8 @@
 				9469BE131ABACE3700CD4CD5 /* ProfileCell.swift */,
 				94FB11C61ABEA95800B1FFB8 /* UserProfileViewController.swift */,
 				94FB11C81ABEAE5E00B1FFB8 /* UserProfileCell.swift */,
+				94FB11CB1ABEC93400B1FFB8 /* ObjcBridgingHeader.m */,
+				94FB11CA1ABEC93200B1FFB8 /* JustKidding-Bridging-Header.h */,
 			);
 			path = JustKidding;
 			sourceTree = "<group>";
@@ -249,6 +257,7 @@
 		9424DEA91AB67C110053B6A9 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				94FB11CD1ABECDE200B1FFB8 /* FacebookSDK.framework */,
 				9424DECA1AB67DB30053B6A9 /* Social.framework */,
 				9424DEC81AB67DAB0053B6A9 /* Accounts.framework */,
 				9424DEC61AB67D580053B6A9 /* libsqlite3.dylib */,
@@ -350,6 +359,7 @@
 				TargetAttributes = {
 					9424DE7D1AB62C4F0053B6A9 = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = U8NBU72828;
 					};
 					9424DE921AB62C4F0053B6A9 = {
 						CreatedOnToolsVersion = 6.2;
@@ -425,6 +435,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FB11CC1ABEC93400B1FFB8 /* ObjcBridgingHeader.m in Sources */,
 				9469BE121ABAC75500CD4CD5 /* MyProfileViewController.swift in Sources */,
 				94FB11C71ABEA95800B1FFB8 /* UserProfileViewController.swift in Sources */,
 				9424DEA61AB636AE0053B6A9 /* ComposeTableViewController.swift in Sources */,
@@ -560,6 +571,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/JustKidding",
@@ -567,6 +581,9 @@
 				INFOPLIST_FILE = JustKidding/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "JustKidding/JustKidding-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -574,6 +591,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/JustKidding",
@@ -581,6 +601,8 @@
 				INFOPLIST_FILE = JustKidding/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "JustKidding/JustKidding-Bridging-Header.h";
 			};
 			name = Release;
 		};

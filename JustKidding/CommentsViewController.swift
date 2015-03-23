@@ -108,6 +108,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                         if(error == nil){
                               self.tableView.reloadData()
                               println("New comment related and saved")
+                              self.loadData()
                             
                         }else{
                            
