@@ -24,14 +24,14 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         self.commentsArray.removeAllObjects()
         
         var relation:PFRelation = self.commentEntry.relationForKey("associatedComments")
-        var query:PFQuery = relation.query()
+        var query:PFQuery = relation.query()!
         query.orderByDescending("likersArray")
 
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects.count) comments.")
+                println("\(objects!.count) comments.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -42,7 +42,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error.userInfo!)")
+                println("Error: \(error) \(error!.userInfo!)")
             }
         }
         
@@ -89,21 +89,21 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             
             let textFields:NSArray = addCommentAlert.textFields! as NSArray
             
-            let commentTextField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let commentTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
             
             var newComment:PFObject = PFObject(className: "Comments")
             newComment["comment"] = commentTextField.text
-            newComment["commenterId"] = PFUser.currentUser().objectId
-            newComment["commenterName"] = 	PFUser.currentUser().username
+            newComment["commenterId"] = PFUser.currentUser()!.objectId
+            newComment["commenterName"] = 	PFUser.currentUser()!.username
             newComment["likersArray"] = []
             newComment["redFlags"] = 0
-            newComment.saveInBackgroundWithBlock({ (sucess:Bool, error:NSError!) -> Void in
+            newComment.saveInBackgroundWithBlock({ (sucess:Bool, error:NSError?) -> Void in
                 
                 if(error == nil){
                     
                     var relation = self.commentEntry.relationForKey("associatedComments") as PFRelation
                     relation.addObject(newComment)
-                    self.commentEntry.saveInBackgroundWithBlock({ (sucess:Bool, error:NSError!) -> Void in
+                    self.commentEntry.saveInBackgroundWithBlock({ (sucess:Bool, error:NSError?) -> Void in
                         
                         if(error == nil){
                               self.tableView.reloadData()
@@ -153,29 +153,29 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell:CommentCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as CommentCell
+        let cell:CommentCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CommentCell
         
-        let comment:PFObject = self.commentsArray.objectAtIndex(indexPath.row) as PFObject
+        let comment:PFObject = self.commentsArray.objectAtIndex(indexPath.row) as! PFObject
         
-        cell.commentLabel.text = comment.objectForKey("comment") as NSString
+        cell.commentLabel.text = comment.objectForKey("comment") as? String
       
-        cell.usernameLabel.text = comment.objectForKey("commenterName") as NSString
+        cell.usernameLabel.text = (comment.objectForKey("commenterName") as! String)
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         
-        cell.dateLabel.text = dateFormatter.stringFromDate(comment.createdAt) as NSString
+        cell.dateLabel.text = dateFormatter.stringFromDate(comment.createdAt!) as String
 
-        var likesArray = comment.objectForKey("likersArray") as NSArray
+        var likesArray = comment.objectForKey("likersArray") as! NSArray
         
         cell.likesLabel.text = String(likesArray.count)
         
         let like_selected = UIImage(named: "like_selected.png") as UIImage!
         let like_empty = UIImage(named: "like_empty.png") as UIImage!
         
-        var likersArray = comment.objectForKey("likersArray") as NSArray
+        var likersArray = comment.objectForKey("likersArray") as! NSArray
         
-        if(likersArray.containsObject(PFUser.currentUser().objectId)){
+        if(likersArray.containsObject(PFUser.currentUser()!.objectId!)){
             cell.likeBtn.setBackgroundImage(like_selected, forState: .Normal)
         }else{
             cell.likeBtn.setBackgroundImage(like_empty, forState: .Normal)
@@ -192,16 +192,16 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         println("Like Btn Clicked")
         
-        var comment = self.commentsArray.objectAtIndex(sender.tag) as PFObject
-        var likersArray = comment.objectForKey("likersArray") as NSArray
+        var comment = self.commentsArray.objectAtIndex(sender.tag) as! PFObject
+        var likersArray = comment.objectForKey("likersArray") as! NSArray
         
-        if(likersArray.containsObject(PFUser.currentUser().objectId)){
-            comment.removeObject(PFUser.currentUser().objectId, forKey: "likersArray")
+        if(likersArray.containsObject(PFUser.currentUser()!.objectId!)){
+            comment.removeObject(PFUser.currentUser()!.objectId!, forKey: "likersArray")
         }else{
-            comment.addObject(PFUser.currentUser().objectId, forKey: "likersArray")
+            comment.addObject(PFUser.currentUser()!.objectId!, forKey: "likersArray")
         }
         
-        comment.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+        comment.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
             if(error == nil){
                 println("_Like saved")
             }else{

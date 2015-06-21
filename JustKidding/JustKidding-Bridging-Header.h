@@ -3,4 +3,5 @@
 //
 
 #import <ParseFacebookUtils/PFFacebookUtils.h>
+#import <Parse/Parse.h>
 

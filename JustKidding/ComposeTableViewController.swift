@@ -50,16 +50,16 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             joke["redFlags"] = 0
             joke["likersArray"] = []
             joke["dislikersArray"] = []
-            joke["senderId"] = currentUser.objectId
-            joke["senderName"] = currentUser.username
+            joke["senderId"] = currentUser!.objectId
+            joke["senderName"] = currentUser!.username
             joke.saveInBackgroundWithBlock {
-                (success: Bool, error: NSError!) -> Void in
+                (success: Bool, error: NSError?) -> Void in
                 if (success) {
                     // The entry has been saved
-                    var relation = currentUser.relationForKey("userJokes") as PFRelation
+                    var relation = currentUser!.relationForKey("userJokes") as PFRelation
                     relation.addObject(joke)
-                    currentUser.saveInBackgroundWithBlock {
-                        (success: Bool, error: NSError!) -> Void in
+                    currentUser!.saveInBackgroundWithBlock {
+                        (success: Bool, error: NSError?) -> Void in
                         if (success) {
                             println("Joke Saved and related!")
                         } else {
@@ -83,7 +83,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
     }
   
     
-    func textView(textView:UITextView!, shouldChangeTextInRange range:NSRange, replacementText text: String!) -> Bool{
+    func textView(textView:UITextView, shouldChangeTextInRange range:NSRange, replacementText text: String) -> Bool{
         
         var newLength:Int = (textView.text as NSString).length + (text as NSString).length - range.length
         var remainingChar:Int = 240 - newLength

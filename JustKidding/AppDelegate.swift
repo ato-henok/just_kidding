@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
         Parse.setApplicationId("65TYBuSV4wiiTh2mdfzimCJ1ytilJ1BQVdGjkv7Z", clientKey: "hy2WGSKdIY7hOl4v2ralS0nTfnlUnbjpj2FyOEps")
         
-        PFFacebookUtils.initializeFacebook()
+        //PFFacebookUtils.initializeFacebook()
         
         
         return true

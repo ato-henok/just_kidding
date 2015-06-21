@@ -28,10 +28,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         var query = PFQuery(className: "Jokes")
         query.orderByDescending("createdAt")
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects.count) jokes on crowd.")
+                println("\(objects!.count) jokes on crowd.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -42,7 +42,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error.userInfo!)")
+                println("Error: \(error) \(error!.userInfo!)")
             }
         }
         
@@ -53,24 +53,24 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     func loadFavs(){
         self.favArray.removeAllObjects()
         
-        var relation = PFUser.currentUser().relationForKey("favoriteJokes") as PFRelation
+        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
-        var query:PFQuery = relation.query()
+        var query:PFQuery = relation.query()!
         
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects.count) user favorites.")
+                println("\(objects!.count) user favorites.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
-                        self.favArray.addObject(object.objectId)
+                        self.favArray.addObject(object.objectId!)
                     }
                 }
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error.userInfo!)")
+                println("Error: \(error) \(error!.userInfo!)")
             }
         }
         
@@ -123,10 +123,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                     
                     let textFields:NSArray = loginAlert.textFields! as NSArray
                     
-                    let usernameTextField:UITextField = textFields.objectAtIndex(0) as UITextField
-                    let passwordTextField:UITextField = textFields.objectAtIndex(1) as UITextField
+                    let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                    let passwordTextField:UITextField = textFields.objectAtIndex(1) as! UITextField
                     
-                    PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser!, error:NSError!) -> Void in
+                    PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
                         
                         if((user) != nil){
                             println("Login success!")
@@ -184,9 +184,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                     
                     let textFields:NSArray = signupAlert.textFields! as NSArray
                     
-                    let emailTextField:UITextField = textFields.objectAtIndex(0) as UITextField
-                    let usernameTextField:UITextField = textFields.objectAtIndex(1) as UITextField
-                    let passwordTextField:UITextField = textFields.objectAtIndex(2) as UITextField
+                    let emailTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                    let usernameTextField:UITextField = textFields.objectAtIndex(1) as! UITextField
+                    let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
                     
                     
                     var newUser:PFUser = PFUser()
@@ -194,7 +194,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                     newUser.username = usernameTextField.text
                     newUser.password = passwordTextField.text
                     newUser["aboutMe"] = "Say something badass about yourself"
-                    newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError!) -> Void in
+                    newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                         if(success){
                             println("New user created")
                         }else{
@@ -254,20 +254,20 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:CrowdCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as CrowdCell
+        let cell:CrowdCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CrowdCell
         
-        let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as PFObject
+        let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
-        cell.jokeLabel.text = joke.objectForKey("joke") as NSString
-        cell.usernameLabel.text = joke.objectForKey("senderName") as NSString
+        cell.jokeLabel.text = (joke.objectForKey("joke")  as! String)
+        cell.usernameLabel.text = (joke.objectForKey("senderName") as! String)
         
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
-        cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt)
+        cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
         
-        var likesArray = joke.objectForKey("likersArray") as NSArray
-        var dislikesArray = joke.objectForKey("dislikersArray") as NSArray
+        var likesArray = joke.objectForKey("likersArray") as! NSArray
+        var dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
         
         var net = likesArray.count - dislikesArray.count
         
@@ -284,11 +284,11 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Update the Like and Dislike icons
         
-        if(likesArray.containsObject(currentUser.objectId)){
+        if(likesArray.containsObject(currentUser!.objectId!)){
             
             cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
             cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
-        }else if(dislikesArray.containsObject(currentUser.objectId)){
+        }else if(dislikesArray.containsObject(currentUser!.objectId!)){
             cell.tomatoBtn.setBackgroundImage(tomato_selected, forState: .Normal)
             cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
         }else{
@@ -298,7 +298,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Update favorite icon
         
-        if(self.favArray.containsObject(joke.objectId)){
+        if(self.favArray.containsObject(joke.objectId!)){
             cell.favBtn.setBackgroundImage(fav_selected, forState: .Normal)
         }else{
             cell.favBtn.setBackgroundImage(fav_empty, forState: .Normal)
@@ -329,16 +329,16 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func roseBtnClicked(sender: UIButton!) {
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
+        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         
-        var likersArray = joke.objectForKey("likersArray") as NSArray
+        var likersArray = joke.objectForKey("likersArray") as! NSArray
         
-        var objectId:NSString = PFUser.currentUser().objectId
+        var objectId:NSString = PFUser.currentUser()!.objectId!
         if(!(likersArray.containsObject(objectId))){
             
             joke.addObject(objectId, forKey: "likersArray")
             joke.removeObject(objectId, forKey: "dislikersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Rose saved")
                 }else{
@@ -350,7 +350,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         }else if((likersArray.containsObject(objectId))){
             
             joke.removeObject(objectId, forKey: "likersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Rose saved")
                 }else{
@@ -367,15 +367,15 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         println("Tomato Btn Clicked")
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
-        var dislikersArray = joke.objectForKey("dislikersArray") as NSArray
+        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
         
-        var objectId:NSString = PFUser.currentUser().objectId
+        var objectId:NSString = PFUser.currentUser()!.objectId!
         
         if(!(dislikersArray.containsObject(objectId))){
             joke.addObject(objectId, forKey: "dislikersArray")
             joke.removeObject(objectId, forKey: "likersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("Tomato saved")
                 }else{
@@ -385,7 +385,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             })
         }else if((dislikersArray.containsObject(objectId))){
             joke.removeObject(objectId, forKey: "dislikersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Tomato saved")
                 }else{
@@ -402,16 +402,16 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         println("Favorite Btn Clicked")
         
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as PFObject
+        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         var jokeObjectId = joke.objectId
         
-        var relation = PFUser.currentUser().relationForKey("favoriteJokes") as PFRelation
+        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
         // Check if the joke is already in favorited
         
-        if(self.favArray.containsObject(jokeObjectId)){
+        if(self.favArray.containsObject(jokeObjectId!)){
             relation.removeObject(joke)
-            PFUser.currentUser().saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+            PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Joke un-favorited")
                 }else{
@@ -421,7 +421,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }else{
             relation.addObject(joke)
-            PFUser.currentUser().saveInBackgroundWithBlock({ (bool:Bool, error:NSError!) -> Void in
+            PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Joke favorited")
                     
@@ -438,9 +438,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         
-        if segue.identifier? == "showComments" {
+        if segue.identifier == "showComments" {
             
-            let controller = segue.destinationViewController as CommentsViewController
+            let controller = segue.destinationViewController as! CommentsViewController
             controller.commentEntry = self.jokeObj
             
             
@@ -450,7 +450,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        self.jokeObj = self.timelineData.objectAtIndex(indexPath.row) as PFObject
+        self.jokeObj = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         self.performSegueWithIdentifier("showComments", sender: self)
         
