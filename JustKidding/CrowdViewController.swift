@@ -76,6 +76,141 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    //?????????
+    func signinUser(){
+        
+        //###########################################################################
+        // Alert for Signing up or loggin in
+        
+        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        
+        alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            
+            //********************************************************************
+            
+            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // Username textfield created with placeholder
+            loginAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Username"
+                
+            })
+            
+            // Password textfield created with placeholder
+            loginAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Password"
+                textfield.secureTextEntry = true
+                
+            })
+            
+            // Action for Login button
+            loginAlert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let textFields:NSArray = loginAlert.textFields! as NSArray
+                
+                let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
+                
+                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                    
+                    if((user) != nil){
+                        println("Login success!")
+                    }else{
+                        println(error)
+                    }
+                    
+                    
+                    
+                }
+                
+            }))
+            self.presentViewController(loginAlert, animated: true, completion: nil)
+            //********************************************************************
+            
+            
+            
+        }))
+        
+        
+        alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            //********************************************************************
+            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // Email textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Email"
+                
+            })
+            
+            // Username textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Username"
+                
+            })
+            
+            // Password textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Password"
+                textfield.secureTextEntry = true
+                
+            })
+            
+            
+            // Action for Login button
+            signupAlert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let textFields:NSArray = signupAlert.textFields! as NSArray
+                
+                let emailTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                let usernameTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
+                let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
+                
+                
+                var newUser:PFUser = PFUser()
+                newUser.email = emailTextField.text
+                newUser.username = usernameTextField.text
+                newUser.password = passwordTextField.text
+                newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                    if(success){
+                        println("New user created")
+                    }else{
+                        println(error)
+                    }
+                })
+                
+            }))
+            self.presentViewController(signupAlert, animated: true, completion: nil)
+            //********************************************************************
+            
+            
+            
+        }))
+        
+        
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        //###########################################################################
+        
+    }
+    //??????????????
+    
     override func viewDidAppear(animated: Bool) {
         
         // Load cell Data
@@ -85,138 +220,6 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             self.loadFavs()
         }
         
-        if(PFUser.currentUser() == nil){
-            
-            //###########################################################################
-            // Alert for Signing up or loggin in
-            
-            var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to post", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            
-            alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
-                alertAction in
-                
-                //********************************************************************
-                
-                var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-                
-                // Username textfield created with placeholder
-                loginAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Username"
-                    
-                })
-                
-                // Password textfield created with placeholder
-                loginAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Password"
-                    textfield.secureTextEntry = true
-                    
-                })
-                
-                // Action for Login button
-                loginAlert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
-                    alertAction in
-                    
-                    let textFields:NSArray = loginAlert.textFields! as NSArray
-                    
-                    let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
-                    let passwordTextField:UITextField = textFields.objectAtIndex(1) as! UITextField
-                    
-                    PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
-                        
-                        if((user) != nil){
-                            println("Login success!")
-                        }else{
-                            println(error)
-                        }
-                        
-                        
-                        
-                    }
-                    
-                }))
-                self.presentViewController(loginAlert, animated: true, completion: nil)
-                //********************************************************************
-                
-                
-                
-            }))
-            
-            
-            alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
-                alertAction in
-                //********************************************************************
-                var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                // Email textfield created with placeholder
-                signupAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Email"
-                    
-                })
-                
-                // Username textfield created with placeholder
-                signupAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Username"
-                    
-                })
-                
-                // Password textfield created with placeholder
-                signupAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Password"
-                    textfield.secureTextEntry = true
-                    
-                })
-                
-                
-                // Action for Login button
-                signupAlert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
-                    alertAction in
-                    
-                    let textFields:NSArray = signupAlert.textFields! as NSArray
-                    
-                    let emailTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
-                    let usernameTextField:UITextField = textFields.objectAtIndex(1) as! UITextField
-                    let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
-                    
-                    
-                    var newUser:PFUser = PFUser()
-                    newUser.email = emailTextField.text
-                    newUser.username = usernameTextField.text
-                    newUser.password = passwordTextField.text
-                    newUser["aboutMe"] = "Say something badass about yourself"
-                    newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
-                        if(success){
-                            println("New user created")
-                        }else{
-                            println(error)
-                        }
-                    })
-                    
-                }))
-                self.presentViewController(signupAlert, animated: true, completion: nil)
-                //********************************************************************
-                
-                
-                
-            }))
-            self.presentViewController(alert, animated: true, completion: nil)
-            
-            //###########################################################################
-            
-            
-            
-            
-        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -284,6 +287,8 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Update the Like and Dislike icons
         
+        if currentUser != nil {
+        
         if(likesArray.containsObject(currentUser!.objectId!)){
             
             cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
@@ -304,6 +309,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.favBtn.setBackgroundImage(fav_empty, forState: .Normal)
         }
         
+        }
         
         
         // Rose button clicked
@@ -317,6 +323,14 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Favorite button clicked
         cell.favBtn.tag = indexPath.row
         cell.favBtn.addTarget(self, action: "favBtnClicked:", forControlEvents: .TouchUpInside)
+            
+        
+        
+       
+        
+        
+        
+
         
 
         
@@ -328,6 +342,15 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     //functions for Like, Dislke, and Favorite buttons
     
     func roseBtnClicked(sender: UIButton!) {
+        
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         
@@ -361,11 +384,21 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         self.tableView.reloadData()
+            
+        }
     }
     
     func tomatoBtnClicked(sender: UIButton!) {
         
         println("Tomato Btn Clicked")
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
@@ -395,11 +428,21 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             })
         }
         self.tableView.reloadData()
+            
+        }
     }
     
     func favBtnClicked(sender: UIButton!) {
         
         println("Favorite Btn Clicked")
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -432,6 +475,8 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         self.tableView.reloadData()
+            
+        }
     }
     //########################################################
     

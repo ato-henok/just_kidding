@@ -227,135 +227,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         if(PFUser.currentUser() != nil){
             self.loadFavs()
         }
-        
-        if(PFUser.currentUser() == nil){
-            
-            //###########################################################################
-            // Alert for Signing up or loggin in
-            
-            var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to post", preferredStyle: UIAlertControllerStyle.Alert)
-            
-
-            alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
-                alertAction in
-                
-                //********************************************************************
-                
-                var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-                
-                // Username textfield created with placeholder
-                loginAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Username"
-                    
-                })
-                
-                // Password textfield created with placeholder
-                loginAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Password"
-                    textfield.secureTextEntry = true
-                    
-                })
-                
-                // Action for Login button
-                loginAlert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
-                    alertAction in
-                    
-                    let textFields:NSArray = loginAlert.textFields! as NSArray
-                    
-                    let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
-                    let passwordTextField:UITextField = textFields.objectAtIndex(1) as! UITextField
-                    
-                    PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
-                        
-                        if((user) != nil){
-                            println("Login success!")
-                        }else{
-                            println(error)
-                        }
-                        
-                        
-                        
-                    }
-                    
-                }))
-                self.presentViewController(loginAlert, animated: true, completion: nil)
-                //********************************************************************
-                
-                
-                
-            }))
-            
-            
-            alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
-                alertAction in
-                //********************************************************************
-                var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                // Email textfield created with placeholder
-                signupAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Email"
-                    
-                })
-                
-                // Username textfield created with placeholder
-                signupAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Username"
-                    
-                })
-                
-                // Password textfield created with placeholder
-                signupAlert.addTextFieldWithConfigurationHandler({
-                    
-                    textfield in
-                    textfield.placeholder = "Password"
-                    textfield.secureTextEntry = true
-                    
-                })
-                
-                
-                // Action for Login button
-                signupAlert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
-                    alertAction in
-                    
-                    let textFields:NSArray = signupAlert.textFields! as NSArray
-                    
-                    let emailTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
-                    let usernameTextField:UITextField = textFields.objectAtIndex(1) as! UITextField
-                    let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
-                    
-                    
-                    var newUser:PFUser = PFUser()
-                    newUser.email = emailTextField.text
-                    newUser.username = usernameTextField.text
-                    newUser.password = passwordTextField.text
-                    newUser["aboutMe"] = "Say something badass about yourself"
-                    newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
-                        if(success){
-                            println("New user created")
-                        }else{
-                            println(error)
-                        }
-                    })
-                    
-                }))
-                self.presentViewController(signupAlert, animated: true, completion: nil)
-                //********************************************************************
-                
-                
-                
-            }))
-           
             
       
-        }
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -423,6 +297,8 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         let tomato_empty = UIImage(named: "tomato_empty.png") as UIImage!
         let fav_empty = UIImage(named: "favorite_empty.png") as UIImage!
         let fav_selected = UIImage(named: "favorite_selected.png") as UIImage!
+        
+        
       
         // Update the Like and Dislike icons
         
@@ -439,7 +315,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
                 cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
             }
-        }
+        
         
         // Update favorite icon
         
@@ -449,7 +325,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             cell.favBtn.setBackgroundImage(fav_empty, forState: .Normal)
         }
       
-        
+        }
         
         // Rose button clicked
         cell.roseBtn.tag = indexPath.row
@@ -481,9 +357,19 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         println("Username label Clicked")
         
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
+        
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         self.senderName = joke.objectForKey("senderName") as! NSString
         self.performSegueWithIdentifier("showUserProfile", sender: self)
+            
+        }
         
         
     }
@@ -491,6 +377,15 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     func roseBtnClicked(sender: UIButton!) {
       
         println("Rose Btn Clicked")
+        
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         
@@ -524,11 +419,21 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
         }
         self.tableView.reloadData()
+            
+        }
     }
     
     func tomatoBtnClicked(sender: UIButton!) {
    
         println("Tomato Btn Clicked")
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
@@ -558,11 +463,22 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             })
         }
         self.tableView.reloadData()
+            
+        }
     }
     
     func favBtnClicked(sender: UIButton!) {
         
         println("Favorite Btn Clicked")
+        
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -595,6 +511,8 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
         self.tableView.reloadData()
+            
+        }
     }
     //########################################################
 

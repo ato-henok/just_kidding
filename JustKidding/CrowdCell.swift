@@ -13,6 +13,9 @@ class CrowdCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel! = UILabel()
     @IBOutlet var usernameLabel: UILabel! = UILabel()
     @IBOutlet var likesCountLabel: UILabel! = UILabel()
+    
+    
+    
     @IBOutlet var jokeLabel: UILabel! = UILabel()
     
     @IBOutlet var roseBtn: UIButton! = UIButton()

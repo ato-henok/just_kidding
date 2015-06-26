@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		940835281B368571005E4419 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940835271B368571005E4419 /* Bolts.framework */; };
-		9408352C1B369F7D005E4419 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9408352B1B369F7D005E4419 /* LoginViewController.swift */; };
-		9408352E1B369FD2005E4419 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9408352D1B369FD2005E4419 /* SignupViewController.swift */; };
 		9424DE841AB62C4F0053B6A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424DE831AB62C4F0053B6A9 /* AppDelegate.swift */; };
 		9424DE861AB62C4F0053B6A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424DE851AB62C4F0053B6A9 /* ViewController.swift */; };
 		9424DE891AB62C4F0053B6A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9424DE871AB62C4F0053B6A9 /* Main.storyboard */; };
@@ -87,8 +85,6 @@
 
 /* Begin PBXFileReference section */
 		940835271B368571005E4419 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		9408352B1B369F7D005E4419 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = JustKidding/LoginViewController.swift; sourceTree = "<group>"; };
-		9408352D1B369FD2005E4419 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignupViewController.swift; path = JustKidding/SignupViewController.swift; sourceTree = "<group>"; };
 		9424DE7E1AB62C4F0053B6A9 /* JustKidding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JustKidding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9424DE821AB62C4F0053B6A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9424DE831AB62C4F0053B6A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -203,8 +199,6 @@
 		9424DE751AB62C4F0053B6A9 = {
 			isa = PBXGroup;
 			children = (
-				9408352B1B369F7D005E4419 /* LoginViewController.swift */,
-				9408352D1B369FD2005E4419 /* SignupViewController.swift */,
 				9424DE801AB62C4F0053B6A9 /* JustKidding */,
 				9424DE961AB62C4F0053B6A9 /* JustKiddingTests */,
 				9424DE7F1AB62C4F0053B6A9 /* Products */,
@@ -462,14 +456,12 @@
 				94FB11CC1ABEC93400B1FFB8 /* ObjcBridgingHeader.m in Sources */,
 				9469BE121ABAC75500CD4CD5 /* MyProfileViewController.swift in Sources */,
 				94FB11C71ABEA95800B1FFB8 /* UserProfileViewController.swift in Sources */,
-				9408352C1B369F7D005E4419 /* LoginViewController.swift in Sources */,
 				9424DEA61AB636AE0053B6A9 /* ComposeTableViewController.swift in Sources */,
 				9469BDA41AB9547400CD4CD5 /* CrowdViewController.swift in Sources */,
 				9469BE141ABACE3700CD4CD5 /* ProfileCell.swift in Sources */,
 				9424DE861AB62C4F0053B6A9 /* ViewController.swift in Sources */,
 				9424DEA41AB6363C0053B6A9 /* TimelineTableViewController.swift in Sources */,
 				94FB11C91ABEAE5E00B1FFB8 /* UserProfileCell.swift in Sources */,
-				9408352E1B369FD2005E4419 /* SignupViewController.swift in Sources */,
 				9469BE0C1ABA6FDF00CD4CD5 /* CrowdCell.swift in Sources */,
 				9469BE0A1AB970E000CD4CD5 /* EntryTableViewCell.swift in Sources */,
 				9424DE841AB62C4F0053B6A9 /* AppDelegate.swift in Sources */,

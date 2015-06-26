@@ -17,6 +17,16 @@ class ProfileCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel! = UILabel()
     @IBOutlet var counterLabel: UILabel! = UILabel()
     @IBOutlet var usernameLabel: UILabel! = UILabel()
+    
+    //Admin Buttons
+    
+    
+    @IBOutlet var flagsLabel: UILabel! = UILabel()
+    @IBOutlet var banBtn: UIButton! = UIButton()
+    @IBOutlet var delBtn: UIButton! = UIButton()
+    @IBOutlet var ftBtn: UIButton! = UIButton()
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

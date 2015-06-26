@@ -1,3 +1,4 @@
+
 //
 //  CommentsViewController.swift
 //  JustKidding
@@ -49,6 +50,141 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    //?????????
+    func signinUser(){
+        
+        //###########################################################################
+        // Alert for Signing up or loggin in
+        
+        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        
+        alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            
+            //********************************************************************
+            
+            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // Username textfield created with placeholder
+            loginAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Username"
+                
+            })
+            
+            // Password textfield created with placeholder
+            loginAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Password"
+                textfield.secureTextEntry = true
+                
+            })
+            
+            // Action for Login button
+            loginAlert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let textFields:NSArray = loginAlert.textFields! as NSArray
+                
+                let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
+                
+                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                    
+                    if((user) != nil){
+                        println("Login success!")
+                    }else{
+                        println(error)
+                    }
+                    
+                    
+                    
+                }
+                
+            }))
+            self.presentViewController(loginAlert, animated: true, completion: nil)
+            //********************************************************************
+            
+            
+            
+        }))
+        
+        
+        alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            //********************************************************************
+            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // Email textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Email"
+                
+            })
+            
+            // Username textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Username"
+                
+            })
+            
+            // Password textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Password"
+                textfield.secureTextEntry = true
+                
+            })
+            
+            
+            // Action for Login button
+            signupAlert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let textFields:NSArray = signupAlert.textFields! as NSArray
+                
+                let emailTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                let usernameTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
+                let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
+                
+                
+                var newUser:PFUser = PFUser()
+                newUser.email = emailTextField.text
+                newUser.username = usernameTextField.text
+                newUser.password = passwordTextField.text
+                newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                    if(success){
+                        println("New user created")
+                    }else{
+                        println(error)
+                    }
+                })
+                
+            }))
+            self.presentViewController(signupAlert, animated: true, completion: nil)
+            //********************************************************************
+            
+            
+            
+        }))
+        
+        
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        //###########################################################################
+        
+    }
+    //??????????????
+    
     
     override func viewDidAppear(animated: Bool) {
         
@@ -77,6 +213,17 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func addComment(sender: AnyObject) {
+        
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
+            
+            
         var addCommentAlert:UIAlertController = UIAlertController(title: "Comment", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
         
         addCommentAlert.addTextFieldWithConfigurationHandler({
@@ -135,6 +282,8 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Present the controller
         self.presentViewController(addCommentAlert, animated: true, completion: nil)
+            
+        }
         
     }
     
@@ -175,10 +324,14 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         var likersArray = comment.objectForKey("likersArray") as! NSArray
         
+        if(PFUser.currentUser() != nil){
+        
         if(likersArray.containsObject(PFUser.currentUser()!.objectId!)){
             cell.likeBtn.setBackgroundImage(like_selected, forState: .Normal)
         }else{
             cell.likeBtn.setBackgroundImage(like_empty, forState: .Normal)
+        }
+            
         }
         
         // Like button clicked
@@ -191,6 +344,15 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     func likeBtnClicked(sender:UIButton!){
         
         println("Like Btn Clicked")
+        
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else{
         
         var comment = self.commentsArray.objectAtIndex(sender.tag) as! PFObject
         var likersArray = comment.objectForKey("likersArray") as! NSArray
@@ -210,6 +372,8 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             
         })
         self.tableView.reloadData()
+            
+        }
         
     }
     

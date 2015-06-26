@@ -57,6 +57,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func loadEntriesData(){
         // Initially, remove what is already there
+        if(PFUser.currentUser() != nil){
+            
+        
         self.timelineData.removeAllObjects()
         var relation = PFUser.currentUser()!.relationForKey("userJokes") as PFRelation
         var query = relation.query()
@@ -78,6 +81,8 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 // Log details of the failure
                 println("Error: \(error) \(error!.userInfo!)")
             }
+        }
+            
         }
         
         
@@ -126,20 +131,174 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    //?????????
+    func signinUser(){
+        
+        //###########################################################################
+        // Alert for Signing up or loggin in
+        
+        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        
+        alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            
+            //********************************************************************
+            
+            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // Username textfield created with placeholder
+            loginAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Username"
+                
+            })
+            
+            // Password textfield created with placeholder
+            loginAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Password"
+                textfield.secureTextEntry = true
+                
+            })
+            
+            // Action for Login button
+            loginAlert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let textFields:NSArray = loginAlert.textFields! as NSArray
+                
+                let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
+                
+                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                    
+                    if((user) != nil){
+                        println("Login success!")
+                        self.loadEntriesData()
+                        self.usernameLabel.text = PFUser.currentUser()!.username
+                        self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
+                        
+                    }else{
+                        println(error)
+                    }
+                    
+                    
+                    
+                }
+                
+            }))
+            self.presentViewController(loginAlert, animated: true, completion: nil)
+            //********************************************************************
+            
+            
+            
+        }))
+        
+        
+        alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            //********************************************************************
+            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // Email textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Email"
+                
+            })
+            
+            // Username textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Username"
+                
+            })
+            
+            // Password textfield created with placeholder
+            signupAlert.addTextFieldWithConfigurationHandler({
+                
+                textfield in
+                textfield.placeholder = "Password"
+                textfield.secureTextEntry = true
+                
+            })
+            
+            
+            // Action for Login button
+            signupAlert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                let textFields:NSArray = signupAlert.textFields! as NSArray
+                
+                let emailTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
+                let usernameTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
+                let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
+                
+                
+                var newUser:PFUser = PFUser()
+                newUser.email = emailTextField.text
+                newUser.username = usernameTextField.text
+                newUser.password = passwordTextField.text
+                newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                    if(success){
+                        println("New user created")
+                        self.loadEntriesData()
+                        self.usernameLabel.text = PFUser.currentUser()!.username
+                        self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
+                    }else{
+                        println(error)
+                    }
+                })
+                
+            }))
+            self.presentViewController(signupAlert, animated: true, completion: nil)
+            //********************************************************************
+            
+            
+            
+        }))
+        
+        
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        //###########################################################################
+        
+    }
+    //??????????????
+
+    
     override func viewDidAppear(animated: Bool) {
         
-          
+        if(PFUser.currentUser() != nil){
         
         // Load cell Data
+            if(PFUser.currentUser() != nil){
+                self.loadEntriesData()
+                
+                
+                self.loadFavs()
+            }
+      
         
-        self.loadEntriesData()
-        if(PFUser.currentUser() != nil){
-            self.loadFavs()
-        }
         
         
         self.usernameLabel.text = PFUser.currentUser()!.username
         self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
+            
+            
+        }else{
+            
+            signinUser()
+            self.loadEntriesData()
+            
+        }
     }
 
     
@@ -241,6 +400,41 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.favBtn.addTarget(self, action: "favBtnClicked:", forControlEvents: .TouchUpInside)
         
         
+        //ADMIN
+        
+        if(currentUser != nil){
+            
+            
+            if(currentUser!.objectForKey("isAdmin")! as! NSObject == true){
+                
+                cell.flagsLabel.text = (joke.objectForKey("redFlags"))!.stringValue
+                
+                // Ban button clicked
+                cell.banBtn.tag = indexPath.row;
+                cell.banBtn.addTarget(self, action: "banBtnClicked:", forControlEvents: .TouchUpInside)
+                
+                // Delete button clicked
+                cell.delBtn.tag = indexPath.row;
+                cell.delBtn.addTarget(self, action: "delBtnClicked:", forControlEvents: .TouchUpInside)
+                
+                // Feature button clicked
+                cell.ftBtn.tag = indexPath.row;
+                cell.ftBtn.addTarget(self, action: "ftBtnClicked:", forControlEvents: .TouchUpInside)
+                
+                
+                
+                
+            }else{
+                cell.flagsLabel.hidden = true;
+                cell.banBtn.hidden = true;
+                cell.delBtn.hidden = true;
+                cell.ftBtn.hidden = true;
+            }
+            
+        }
+        
+        //ADMIN
+    
         
         
         return cell
@@ -355,7 +549,118 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         self.tableView.reloadData()
     }
+    
+    
     //########################################################
+    
+    
+    
+    
+    //************ Admin Functions **********
+    func banBtnClicked(sender: UIButton!) {
+        
+        var confirmationAlert = UIAlertController(title: "Are you sure?", message: "User will be banned permanently", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        confirmationAlert.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            
+            var authorId = joke.objectForKey("senderId") as! String
+            var author = PFUser()
+            author.objectId = authorId
+            
+            author.deleteInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
+                
+                if(error == nil){
+                    println("User banned!")
+                }
+            }
+            
+        }))
+        
+        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            println("User not banned")
+            
+        }))
+        
+        presentViewController(confirmationAlert, animated: true, completion: nil)
+        
+        
+        self.tableView.reloadData()
+    }
+    
+    
+    func delBtnClicked(sender: UIButton!) {
+        
+        var confirmationAlert = UIAlertController(title: "Are you sure?", message: "Joke will be deleted permanently", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        confirmationAlert.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            
+            joke.deleteInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
+                
+                if(error == nil){
+                    println("Joke deleted!")
+                }
+            }
+            
+        }))
+        
+        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            println("Joke not deleted")
+            
+        }))
+        
+        presentViewController(confirmationAlert, animated: true, completion: nil)
+        
+        
+        self.tableView.reloadData()
+    }
+    
+    
+    func ftBtnClicked(sender: UIButton!) {
+        
+       
+        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        
+        if(joke.objectForKey("isOnStage")! as! NSObject == false){
+            
+            sender.titleLabel?.text = "Un-Ft"
+            joke.setValue(true, forKey: "isOnStage")
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                if(error == nil){
+                    println("Joke FEATURED!")
+                }else{
+                    println("Error occured while featuring")
+                }
+            })
+            
+        }else{
+            
+            sender.titleLabel?.text = "Ft"
+            joke.setValue(false, forKey: "isOnStage")
+            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                if(error == nil){
+                    println("Joke UN-FEATURED!")
+                }else{
+                    println("Error occured un-featuring")
+                }
+            })
+            
+            
+        }
+        self.tableView.reloadData()
+    }
+
+    
+    //************
+    
+    
+    
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
