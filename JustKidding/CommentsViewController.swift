@@ -253,9 +253,9 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                     self.commentEntry.saveInBackgroundWithBlock({ (sucess:Bool, error:NSError?) -> Void in
                         
                         if(error == nil){
-                              self.tableView.reloadData()
+                              //self.tableView.reloadData()
                               println("New comment related and saved")
-                              self.loadData()
+                              self.loadData()   
                             
                         }else{
                            

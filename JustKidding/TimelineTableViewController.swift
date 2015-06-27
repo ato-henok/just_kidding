@@ -33,7 +33,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         var query = PFQuery(className: "Jokes")
         query.whereKey("isOnStage", equalTo: true)
-        query.orderByDescending("updatedAt")
+        query.orderByDescending("featuredAt")
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {

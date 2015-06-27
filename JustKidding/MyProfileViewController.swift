@@ -124,10 +124,6 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         }else if(sender.selectedSegmentIndex == 1){
             // Load favorites
             self.loadFavData()
-        }else{
-            // LOG OUT
-            PFUser.logOut()
-            println("Logged out")
         }
     }
     
@@ -630,9 +626,14 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             
             sender.titleLabel?.text = "Un-Ft"
             joke.setValue(true, forKey: "isOnStage")
+            
+            var todaysDate:NSDate = NSDate()
+            joke.setValue(todaysDate, forKey: "featuredAt")
+            
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("Joke FEATURED!")
+                    
                 }else{
                     println("Error occured while featuring")
                 }

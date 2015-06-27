@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9405CE011B3E5C9500831B37 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9405CE001B3E5C9500831B37 /* SettingViewController.swift */; };
 		940835281B368571005E4419 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940835271B368571005E4419 /* Bolts.framework */; };
 		9424DE841AB62C4F0053B6A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424DE831AB62C4F0053B6A9 /* AppDelegate.swift */; };
 		9424DE861AB62C4F0053B6A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424DE851AB62C4F0053B6A9 /* ViewController.swift */; };
@@ -84,6 +85,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9405CE001B3E5C9500831B37 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = ../SettingViewController.swift; sourceTree = "<group>"; };
 		940835271B368571005E4419 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		9424DE7E1AB62C4F0053B6A9 /* JustKidding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JustKidding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9424DE821AB62C4F0053B6A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 		9424DE801AB62C4F0053B6A9 /* JustKidding */ = {
 			isa = PBXGroup;
 			children = (
+				9405CE001B3E5C9500831B37 /* SettingViewController.swift */,
 				9469BE0F1ABAAB0B00CD4CD5 /* CommentsViewController.swift */,
 				9469BE0B1ABA6FDF00CD4CD5 /* CrowdCell.swift */,
 				9469BE091AB970E000CD4CD5 /* EntryTableViewCell.swift */,
@@ -458,6 +461,7 @@
 				94FB11C71ABEA95800B1FFB8 /* UserProfileViewController.swift in Sources */,
 				9424DEA61AB636AE0053B6A9 /* ComposeTableViewController.swift in Sources */,
 				9469BDA41AB9547400CD4CD5 /* CrowdViewController.swift in Sources */,
+				9405CE011B3E5C9500831B37 /* SettingViewController.swift in Sources */,
 				9469BE141ABACE3700CD4CD5 /* ProfileCell.swift in Sources */,
 				9424DE861AB62C4F0053B6A9 /* ViewController.swift in Sources */,
 				9424DEA41AB6363C0053B6A9 /* TimelineTableViewController.swift in Sources */,
