@@ -27,7 +27,7 @@ class SettingViewController: UIViewController{
     
     override func viewDidAppear(animated: Bool) {
         
-        changeBio.addTarget(self, action: "changeBioCliked:", forControlEvents: .TouchUpInside)
+        changeBio.addTarget(self, action: "changeBioClicked:", forControlEvents: .TouchUpInside)
         changePassword.addTarget(self, action: "changePasswordClicked:", forControlEvents: .TouchUpInside)
         changeUsername.addTarget(self, action: "changeUsernameClicked:", forControlEvents: .TouchUpInside)
         changeEmail.addTarget(self, action: "changeEmailClicked:", forControlEvents: .TouchUpInside)
