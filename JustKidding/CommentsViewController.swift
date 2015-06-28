@@ -160,6 +160,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
                 newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
                         println("New user created")
@@ -214,6 +215,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func addComment(sender: AnyObject) {
         
+        PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() == nil){
             
@@ -221,6 +223,12 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             signinUser()
             
             
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
+        
+        
         }else{
             
             
@@ -307,7 +315,9 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         let comment:PFObject = self.commentsArray.objectAtIndex(indexPath.row) as! PFObject
         
         cell.commentLabel.text = comment.objectForKey("comment") as? String
-      
+        
+       
+        
         cell.usernameLabel.text = (comment.objectForKey("commenterName") as! String)
         
         var dateFormatter = NSDateFormatter()
@@ -346,7 +356,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         println("Like Btn Clicked")
         
         
-        if(PFUser.currentUser() == nil){
+        if(PFUser.currentUser() == nil && PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == true){
             
             
             signinUser()

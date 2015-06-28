@@ -145,6 +145,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
                 newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
                         println("New user created")
@@ -173,11 +174,16 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
 
     @IBAction func sendEntry(sender: AnyObject) {
         
+        PFUser.currentUser()?.fetch()
+        
         var currentUser = PFUser.currentUser()
-        if currentUser != nil {
+        
+        if currentUser != nil{
             // Do stuff with the user
             
             //Create Joke object and set initial values
+            
+           
             
             var joke = PFObject(className: "Jokes")
             joke["isOnStage"] = false
@@ -210,6 +216,12 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             }
             
             self.navigationController?.popToRootViewControllerAnimated(true)
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         } else {

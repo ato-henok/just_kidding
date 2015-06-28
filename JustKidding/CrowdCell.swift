@@ -11,7 +11,9 @@ import UIKit
 class CrowdCell: UITableViewCell {
     
     @IBOutlet var dateLabel: UILabel! = UILabel()
-    @IBOutlet var usernameLabel: UILabel! = UILabel()
+    //@IBOutlet var usernameLabel: UIButton! = UIButton()
+    
+    @IBOutlet var usernameLabel: UIButton! = UIButton()
     @IBOutlet var likesCountLabel: UILabel! = UILabel()
     
     

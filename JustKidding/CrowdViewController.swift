@@ -17,6 +17,8 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     //var jokeObj:PFObject = PFObject()
     var jokeObj = PFObject(className: "Jokes")
     
+    var senderName = NSString()
+    
     @IBOutlet var tableView: UITableView!
     
     // Load
@@ -186,6 +188,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
                 newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
                         println("New user created")
@@ -214,6 +217,11 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidAppear(animated: Bool) {
         
         // Load cell Data
+        
+        PFUser.currentUser()?.fetch()
+        println("Current User:")
+        println(PFUser.currentUser()?.username)
+        println("************")
         
         self.loadData()
         if(PFUser.currentUser() != nil){
@@ -262,7 +270,8 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         cell.jokeLabel.text = (joke.objectForKey("joke")  as! String)
-        cell.usernameLabel.text = (joke.objectForKey("senderName") as! String)
+        
+        cell.usernameLabel.setTitle(joke.objectForKey("senderName")?.string, forState: UIControlState.Normal)
         
         
         var dateFormatter = NSDateFormatter()
@@ -323,6 +332,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Favorite button clicked
         cell.favBtn.tag = indexPath.row
         cell.favBtn.addTarget(self, action: "favBtnClicked:", forControlEvents: .TouchUpInside)
+        
+        // Username label clicked
+        cell.usernameLabel.tag = indexPath.row
+        cell.usernameLabel.addTarget(self, action: "nameLabelClicked:", forControlEvents: .TouchUpInside)
             
         
         
@@ -341,13 +354,49 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     //########################################################
     //functions for Like, Dislke, and Favorite buttons
     
-    func roseBtnClicked(sender: UIButton!) {
+    func nameLabelClicked(sender: UIButton!) {
         
+        println("Username label Clicked")
+        
+        PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
+            
+            
+        }else{
+            
+            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            self.senderName = joke.objectForKey("senderName") as! NSString
+            self.performSegueWithIdentifier("showUserProfile", sender: self)
+            
+        }
+        
+        
+    }
+    
+    func roseBtnClicked(sender: UIButton!) {
+        
+        PFUser.currentUser()?.fetch()
+        
+        if(PFUser.currentUser() == nil){
+            
+            
+            signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
@@ -392,10 +441,18 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         println("Tomato Btn Clicked")
         
+        PFUser.currentUser()?.fetch()
+        
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
@@ -436,10 +493,18 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         println("Favorite Btn Clicked")
         
+        PFUser.currentUser()?.fetch()
+        
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
@@ -488,6 +553,12 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             let controller = segue.destinationViewController as! CommentsViewController
             controller.commentEntry = self.jokeObj
             
+            
+        }else if(segue.identifier == "showUserProfile"){
+            
+            let controller = segue.destinationViewController as! UserProfileViewController
+            
+            controller.senderName = self.senderName
             
         }
     }

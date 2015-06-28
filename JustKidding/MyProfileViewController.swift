@@ -241,6 +241,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
                 newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
                         println("New user created")
@@ -272,24 +273,30 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidAppear(animated: Bool) {
         
+        PFUser.currentUser()?.fetch()
+        
         if(PFUser.currentUser() != nil){
         
-        // Load cell Data
-            if(PFUser.currentUser() != nil){
+            
+            
                 self.loadEntriesData()
                 
-                
                 self.loadFavs()
-            }
-      
         
-        
-        
-        self.usernameLabel.text = PFUser.currentUser()!.username
-        self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
+                self.usernameLabel.text = PFUser.currentUser()!.username
+                self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
             
             
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+                var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+                alert.show();
+        
         }else{
+            
+           
             
             signinUser()
             self.loadEntriesData()
@@ -336,6 +343,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         cell.jokeLabel.text = joke.objectForKey("joke") as? String
+        
+       
+        
         cell.usernameLabel.text = joke.objectForKey("senderName") as? String
         
         
@@ -401,7 +411,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         if(currentUser != nil){
             
             
-            if(currentUser!.objectForKey("isAdmin")! as! NSObject == true){
+            if(currentUser!.objectForKey("isAdmin")?.boolValue == true){
                 
                 cell.flagsLabel.text = (joke.objectForKey("redFlags"))!.stringValue
                 

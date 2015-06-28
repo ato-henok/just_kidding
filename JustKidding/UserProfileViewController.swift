@@ -139,6 +139,9 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         cell.jokeLabel.text = (joke.objectForKey("joke") as! String)
+        
+    
+        
         cell.usernameLabel.text = (joke.objectForKey("senderName") as! String)
         
         

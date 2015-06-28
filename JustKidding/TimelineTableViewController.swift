@@ -193,6 +193,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
                 newUser["aboutMe"] = "Say something badass about yourself"
+                newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
                         println("New user created")
@@ -222,6 +223,11 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidAppear(animated: Bool) {
         
         // Load cell Data
+        
+        PFUser.currentUser()?.fetch()
+        println("Current User:")
+        println(PFUser.currentUser()?.username)
+        println("************")
         
         self.loadData()
         if(PFUser.currentUser() != nil){
@@ -272,6 +278,31 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         cell.jokeLabel.text = joke.objectForKey("joke") as? String
+        
+        //****************COLOR CODE*********
+//        var query = PFQuery(className: "User")
+//        query.whereKey("objectId", equalTo: joke.objectForKey("senderId")!)
+//        query.findObjectsInBackgroundWithBlock {
+//            (objects: [AnyObject]?, error: NSError?) -> Void in
+//            if error == nil {
+//                // The find succeeded.
+//                println("Author found.")
+//                
+//                if(objects!.count != 0){
+//                    println("Admin found.")
+//                    var author = objects?.first as! PFUser
+//                    if(author.objectForKey("isAdmin")?.boolValue == true){
+//                        cell.jokeLabel.textColor = UIColor.purpleColor()
+//                    }
+//                }
+//                
+//            } else {
+//                // Log details of the failure
+//                println("Error: \(error) \(error!.userInfo!)")
+//            }
+//        }
+        //********************
+        
         cell.usernameLabel.setTitle(joke.objectForKey("senderName") as? String, forState: UIControlState.Normal)
         
      
@@ -356,11 +387,18 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     func nameLabelClicked(sender: UIButton!) {
         
         println("Username label Clicked")
+        PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
@@ -378,11 +416,18 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
       
         println("Rose Btn Clicked")
         
+        PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
@@ -427,10 +472,18 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
    
         println("Tomato Btn Clicked")
         
+        PFUser.currentUser()?.fetch()
+        
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
@@ -471,11 +524,18 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         println("Favorite Btn Clicked")
         
+        PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() == nil){
             
             
             signinUser()
+            
+            
+        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            alert.show();
             
             
         }else{
