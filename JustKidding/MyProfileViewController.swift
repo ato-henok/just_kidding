@@ -17,7 +17,10 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     //var jokeObj:PFObject = PFObject()
     var jokeObj = PFObject(className: "Jokes")
     
+    @IBOutlet var notifyBtn: UIButton! = UIButton()
+    
     @IBOutlet var usernameLabel: UILabel! = UILabel()
+    
     @IBOutlet var bioLabel: UILabel! = UILabel()
   
     
@@ -285,6 +288,14 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
                 self.usernameLabel.text = PFUser.currentUser()!.username
                 self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
+            
+            
+            //ADMIN
+             if(PFUser.currentUser()!.objectForKey("isAdmin")?.boolValue == true){
+                
+                self.notifyBtn.addTarget(self, action: "notifyBtnCLicked:", forControlEvents: .TouchUpInside)
+                
+            }
             
             
             
@@ -644,6 +655,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 if(error == nil){
                     println("Joke FEATURED!")
                     
+                    //Send push notification to author
+                    
+                    
                 }else{
                     println("Error occured while featuring")
                 }
@@ -670,6 +684,14 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     //************
     
     
+    func notifyBtnCLicked(sender: UIButton!){
+        
+        
+        //Send push notification to all users that there is new content on Stage
+        
+        
+        
+    }
     
     
     

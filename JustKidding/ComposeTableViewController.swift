@@ -22,6 +22,14 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
     */
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.entryTextView.layer.borderColor = UIColor.purpleColor().CGColor
+        self.entryTextView.layer.borderWidth = 1
+        self.entryTextView.layer.cornerRadius = 4
+        self.entryTextView.delegate = self
+        
+        
+        self.entryTextView.becomeFirstResponder()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

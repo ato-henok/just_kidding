@@ -24,7 +24,9 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     //var jokeObj:PFObject = PFObject()
     var jokeObj = PFObject(className: "Jokes")
     var senderName = NSString()
+    var senderBio = NSString()
     
+    @IBOutlet var senderBioLabel: UILabel! = UILabel()
     @IBOutlet var senderNameLabel: UILabel! = UILabel()
     @IBOutlet var tableView: UITableView!
     
@@ -96,6 +98,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             self.loadFavs()
         }
         self.senderNameLabel.text = self.senderName as String
+        self.senderBioLabel.text = self.senderBio as String
             
         
     }

@@ -22,6 +22,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     //var jokeObj:PFObject = PFObject()
     var jokeObj = PFObject(className: "Jokes")
     var senderName = NSString()
+    var senderBio = NSString()
     
     @IBOutlet var tableView: UITableView!
     
@@ -405,6 +406,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         self.senderName = joke.objectForKey("senderName") as! NSString
+        self.senderBio = joke.objectForKey("senderBio") as! NSString
         self.performSegueWithIdentifier("showUserProfile", sender: self)
             
         }
@@ -594,6 +596,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             let controller = segue.destinationViewController as! UserProfileViewController
             
             controller.senderName = self.senderName
+            controller.senderBio = self.senderBio
             
         }
         
