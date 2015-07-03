@@ -272,7 +272,8 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.jokeLabel.text = (joke.objectForKey("joke")  as! String)
         
         cell.usernameLabel.setTitle(joke.objectForKey("senderName")?.string, forState: UIControlState.Normal)
-        
+        //cell.usernameLabel.backgroundColor = UIColor.purpleColor()
+        //cell.usernameLabel.tintColor = UIColor.purpleColor()
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
