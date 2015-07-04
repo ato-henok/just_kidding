@@ -246,6 +246,15 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             
             let commentTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
             
+            
+            
+            if((commentTextField.text as NSString).length > 140 || (commentTextField.text as NSString).length == 0){
+                
+                var alert = UIAlertView(title: "Oops!", message: "Comment has to be less than 140 characters and cannot be empty.", delegate: nil, cancelButtonTitle: "Go it!")
+                alert.show();
+                
+            }else{
+            
             var newComment:PFObject = PFObject(className: "Comments")
             newComment["comment"] = commentTextField.text
             newComment["commenterId"] = PFUser.currentUser()!.objectId
@@ -278,7 +287,9 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 
             })
             self.tableView.reloadData()
-            
+                
+                
+            }//end for 140 if
             
             
         }))

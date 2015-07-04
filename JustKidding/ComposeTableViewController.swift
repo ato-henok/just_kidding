@@ -191,6 +191,12 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             
             //Create Joke object and set initial values
             
+            if((entryTextView.text as NSString).length == 0){
+                
+                var alert = UIAlertView(title: "Oops!", message: "Joke cannot be empty, only your wallet/purse can. Come on!", delegate: nil, cancelButtonTitle: "Fine, you didn't have to be rude!")
+                alert.show();
+                
+            }else{
            
             
             var joke = PFObject(className: "Jokes")
@@ -224,6 +230,8 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             }
             
             self.navigationController?.popToRootViewControllerAnimated(true)
+                
+            }//end of empty text-if
             
             
         }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){

@@ -50,8 +50,20 @@ class SettingViewController: UIViewController{
             let textFields:NSArray = changeBioAlert.textFields! as NSArray
             
             let bioTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
-            var currentUser = PFUser.currentUser()
             
+            if((bioTextField.text as NSString).length == 0){
+                
+                var alert = UIAlertView(title: "Oops!", message: "Bio cannot be empty. Pretty sure there is something badass about you.", delegate: nil, cancelButtonTitle: "Ok, thanks!")
+                alert.show()
+                
+                
+            }else if ((bioTextField.text as NSString).length > 140){
+                var alert = UIAlertView(title: "Too Long!", message: "Bio is too long. Let's save that for your autobiography", delegate: nil, cancelButtonTitle: "Ok, whatever!")
+                alert.show()
+                
+            }else{
+            
+            var currentUser = PFUser.currentUser()
             currentUser?.setValue(bioTextField.text, forKey: "aboutMe")
             currentUser?.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                 
@@ -66,7 +78,8 @@ class SettingViewController: UIViewController{
                 }
                 
             })
-            
+                
+            }//end for empty error
             
             
             
