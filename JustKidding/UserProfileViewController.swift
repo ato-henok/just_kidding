@@ -24,8 +24,9 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     //var jokeObj:PFObject = PFObject()
     var jokeObj = PFObject(className: "Jokes")
     var senderName = NSString()
-    var senderBio = NSString()
     
+    
+    @IBOutlet var jokesCounterLabel: UILabel! = UILabel()
     @IBOutlet var senderBioLabel: UILabel! = UILabel()
     @IBOutlet var senderNameLabel: UILabel! = UILabel()
     @IBOutlet var tableView: UITableView!
@@ -97,8 +98,37 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         if(PFUser.currentUser() != nil){
             self.loadFavs()
         }
-        self.senderNameLabel.text = self.senderName as String
-        self.senderBioLabel.text = self.senderBio as String
+      
+        
+        var  query = PFUser.query()
+        query?.whereKey("username", equalTo: self.senderName)
+        query?.getFirstObjectInBackgroundWithBlock({ (author, error) -> Void in
+            
+            if error == nil {
+                
+                self.senderNameLabel.text = author!.objectForKey("username") as? String
+                self.senderBioLabel.text = author!.objectForKey("aboutMe") as? String
+                
+                var jksOnStage = author!.objectForKey("jokesOnStage") as! Int?
+                
+                println(jksOnStage)
+            
+                if(jksOnStage != nil){
+                    
+                    if(jksOnStage > 0){
+                        self.jokesCounterLabel.text = "Has been on Stage \(String(jksOnStage!)) times."
+                    }
+                }
+                
+            }else{
+                println("Error querying author")
+            }
+        })
+        
+        
+        
+        
+       
             
         
     }

@@ -18,7 +18,6 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     var jokeObj = PFObject(className: "Jokes")
     
     var senderName = NSString()
-    var senderBio = NSString()
     
     @IBOutlet var tableView: UITableView!
     
@@ -378,7 +377,6 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
             self.senderName = joke.objectForKey("senderName") as! NSString
-            self.senderBio = joke.objectForKey("senderBio") as! NSString
             self.performSegueWithIdentifier("showUserProfile", sender: self)
             
         }
@@ -562,7 +560,6 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             let controller = segue.destinationViewController as! UserProfileViewController
             
             controller.senderName = self.senderName
-            controller.senderBio = self.senderBio
             
         }
     }
