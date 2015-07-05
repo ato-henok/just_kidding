@@ -327,7 +327,12 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         cell.commentLabel.text = comment.objectForKey("comment") as? String
         
-       
+        //****************COLOR CODE*********
+        if(comment.objectForKey("fromAdmin")?.boolValue == true){
+            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            cell.commentLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
+        }
+        //********************
         
         cell.usernameLabel.text = (comment.objectForKey("commenterName") as! String)
         

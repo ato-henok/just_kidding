@@ -222,6 +222,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidAppear(animated: Bool) {
         
+        self.navigationController?.navigationBar.barTintColor = UIColor.purpleColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
         // Load cell Data
         
         PFUser.currentUser()?.fetch()
@@ -280,27 +283,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         cell.jokeLabel.text = joke.objectForKey("joke") as? String
         
         //****************COLOR CODE*********
-//        var query = PFQuery(className: "User")
-//        query.whereKey("objectId", equalTo: joke.objectForKey("senderId")!)
-//        query.findObjectsInBackgroundWithBlock {
-//            (objects: [AnyObject]?, error: NSError?) -> Void in
-//            if error == nil {
-//                // The find succeeded.
-//                println("Author found.")
-//                
-//                if(objects!.count != 0){
-//                    println("Admin found.")
-//                    var author = objects?.first as! PFUser
-//                    if(author.objectForKey("isAdmin")?.boolValue == true){
-//                        cell.jokeLabel.textColor = UIColor.purpleColor()
-//                    }
-//                }
-//                
-//            } else {
-//                // Log details of the failure
-//                println("Error: \(error) \(error!.userInfo!)")
-//            }
-//        }
+        if(joke.objectForKey("fromAdmin")?.boolValue == true){
+            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
+        }
         //********************
         
         cell.usernameLabel.setTitle(joke.objectForKey("senderName") as? String, forState: UIControlState.Normal)

@@ -216,6 +216,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidAppear(animated: Bool) {
         
+        self.navigationController?.navigationBar.barTintColor = UIColor.purpleColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
         // Load cell Data
         
         PFUser.currentUser()?.fetch()
@@ -270,6 +273,13 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         let joke:PFObject = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         cell.jokeLabel.text = (joke.objectForKey("joke")  as! String)
+        
+        //****************COLOR CODE*********
+        if(joke.objectForKey("fromAdmin")?.boolValue == true){
+            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
+        }
+        //********************
         
         cell.usernameLabel.setTitle(joke.objectForKey("senderName")?.string, forState: UIControlState.Normal)
         //cell.usernameLabel.backgroundColor = UIColor.purpleColor()

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		94038BFB1B48764500E039BF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94038BFA1B48764500E039BF /* TabBarController.swift */; };
+		94038BFF1B48981E00E039BF /* launchscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 94038BFE1B48981E00E039BF /* launchscreen.png */; };
 		9405CE011B3E5C9500831B37 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9405CE001B3E5C9500831B37 /* SettingViewController.swift */; };
 		940835281B368571005E4419 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940835271B368571005E4419 /* Bolts.framework */; };
 		9424DE841AB62C4F0053B6A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9424DE831AB62C4F0053B6A9 /* AppDelegate.swift */; };
@@ -85,6 +87,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		94038BFA1B48764500E039BF /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = JustKidding/TabBarController.swift; sourceTree = "<group>"; };
+		94038BFE1B48981E00E039BF /* launchscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchscreen.png; sourceTree = "<group>"; };
 		9405CE001B3E5C9500831B37 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = ../SettingViewController.swift; sourceTree = "<group>"; };
 		940835271B368571005E4419 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		9424DE7E1AB62C4F0053B6A9 /* JustKidding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JustKidding.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +205,7 @@
 		9424DE751AB62C4F0053B6A9 = {
 			isa = PBXGroup;
 			children = (
+				94038BFA1B48764500E039BF /* TabBarController.swift */,
 				9424DE801AB62C4F0053B6A9 /* JustKidding */,
 				9424DE961AB62C4F0053B6A9 /* JustKiddingTests */,
 				9424DE7F1AB62C4F0053B6A9 /* Products */,
@@ -303,6 +308,7 @@
 		9469BE081AB96E3000CD4CD5 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				94038BFE1B48981E00E039BF /* launchscreen.png */,
 				9469BDD81AB96E2000CD4CD5 /* crowd.png */,
 				9469BDD91AB96E2000CD4CD5 /* crowd@2x.png */,
 				9469BDDA1AB96E2000CD4CD5 /* favorite_empty.png */,
@@ -437,6 +443,7 @@
 				9469BE051AB96E2000CD4CD5 /* tomato_empty@2x.png in Resources */,
 				9469BE021AB96E2000CD4CD5 /* stage.png in Resources */,
 				9469BE001AB96E2000CD4CD5 /* rose_selected.png in Resources */,
+				94038BFF1B48981E00E039BF /* launchscreen.png in Resources */,
 				9469BDFE1AB96E2000CD4CD5 /* rose_empty.png in Resources */,
 				9469BDFC1AB96E2000CD4CD5 /* profile.png in Resources */,
 			);
@@ -457,6 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				94FB11CC1ABEC93400B1FFB8 /* ObjcBridgingHeader.m in Sources */,
+				94038BFB1B48764500E039BF /* TabBarController.swift in Sources */,
 				9469BE121ABAC75500CD4CD5 /* MyProfileViewController.swift in Sources */,
 				94FB11C71ABEA95800B1FFB8 /* UserProfileViewController.swift in Sources */,
 				9424DEA61AB636AE0053B6A9 /* ComposeTableViewController.swift in Sources */,

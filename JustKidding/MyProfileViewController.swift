@@ -276,6 +276,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidAppear(animated: Bool) {
         
+        self.navigationController?.navigationBar.barTintColor = UIColor.purpleColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
         PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() != nil){
@@ -286,7 +289,26 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 self.loadFavs()
         
-                self.usernameLabel.text = PFUser.currentUser()!.username
+            
+            
+            
+                var jksOnStage = PFUser.currentUser()!.objectForKey("jokesOnStage") as! Int?
+            
+                println(jksOnStage)
+            
+                if(jksOnStage != nil){
+                
+                    if(jksOnStage > 0){
+                        self.usernameLabel.text = "\(PFUser.currentUser()!.username!) [\(String(jksOnStage!)) times on stage]"
+                    }
+                    
+                }else{
+                    
+                    self.usernameLabel.text = PFUser.currentUser()!.username
+                }
+
+            
+            
                 self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
             
             
@@ -355,7 +377,12 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell.jokeLabel.text = joke.objectForKey("joke") as? String
         
-       
+        //****************COLOR CODE*********
+        if(joke.objectForKey("fromAdmin")?.boolValue == true){
+            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
+        }
+        //********************
         
         cell.usernameLabel.text = joke.objectForKey("senderName") as? String
         
