@@ -258,6 +258,13 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             var newComment:PFObject = PFObject(className: "Comments")
             newComment["comment"] = commentTextField.text
             newComment["commenterId"] = PFUser.currentUser()!.objectId
+                
+            //****************COLOR CODE*********
+            if(PFUser.currentUser()!.objectForKey("isAdmin")?.boolValue == true){
+                    newComment["fromAdmin"] = true
+            }
+            //********************
+                
             newComment["commenterName"] = 	PFUser.currentUser()!.username
             newComment["likersArray"] = []
             newComment["redFlags"] = 0

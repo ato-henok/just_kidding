@@ -129,6 +129,18 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                     
                     if((user) != nil){
                         println("Login success!")
+                        var installation:PFInstallation = PFInstallation.currentInstallation()
+                        installation.addUniqueObject("NewOnStage", forKey: "channels")
+                        installation["user"] = PFUser.currentUser()
+                        installation.saveInBackgroundWithBlock({ (bool, error) -> Void in
+                            if(error == nil){
+                                println("Subscribed to NewOnStage channel")
+                            }else{
+                                println("Error subscribing to NewOnStage channel")
+                            }
+                        })
+                        
+                        
                     }else{
                         println(error)
                     }
@@ -197,6 +209,19 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
                         println("New user created")
+                        
+                        var installation:PFInstallation = PFInstallation.currentInstallation()
+                        installation.addUniqueObject("NewOnStage", forKey: "channels")
+                        installation["user"] = PFUser.currentUser()
+                        installation.saveInBackgroundWithBlock({ (bool, error) -> Void in
+                            if(error == nil){
+                                println("Subscribed to NewOnStage channel")
+                            }else{
+                                println("Error subscribing to NewOnStage channel")
+                            }
+                        })
+                        
+                        
                     }else{
                         println(error)
                     }
@@ -242,6 +267,8 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadData", name: "sendNewOnStage", object: nil)
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "groupcell")
         

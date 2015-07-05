@@ -206,6 +206,13 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             joke["likersArray"] = []
             joke["dislikersArray"] = []
             joke["senderId"] = currentUser!.objectId
+                
+            //****************COLOR CODE*********
+            if(currentUser!.objectForKey("isAdmin")?.boolValue == true){
+                joke["fromAdmin"] = true
+            }
+            //********************
+                
             joke["senderName"] = currentUser!.username
             joke.saveInBackgroundWithBlock {
                 (success: Bool, error: NSError?) -> Void in

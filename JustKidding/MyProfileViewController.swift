@@ -685,6 +685,39 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                     //Send push notification to author
                     
                     
+                    var  query = PFUser.query()
+                    query?.whereKey("objectId", equalTo: joke.objectForKey("senderId")!)
+                    query?.getFirstObjectInBackgroundWithBlock({ (author, error) -> Void in
+                        
+                        if error == nil {
+                            
+                            println("Query returned user to be featured")
+                            
+                            var pushQuery:PFQuery = PFInstallation.query()!
+                            pushQuery.whereKey("user", equalTo: author!)
+                            
+                            var push:PFPush = PFPush()
+                            push.setQuery(pushQuery)
+                            
+                            push.setMessage("Congrats! You are featured on the Stage!")
+                            
+                            push.sendPushInBackgroundWithBlock({ (bool, error) -> Void in
+                                if(error == nil){
+                                    println("Congrats push sent")
+                                }else{
+                                    println("Error sending congrats push")
+                                }
+                            })
+                            
+                            
+                        }else{
+                            println("Error querying author")
+                        }
+                    })
+                    
+                    
+                    
+                    
                 }else{
                     println("Error occured while featuring")
                 }
@@ -716,6 +749,15 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         //Send push notification to all users that there is new content on Stage
         
+        var push:PFPush = PFPush()
+        push.setChannel("NewOnStagePush")
+        
+        var data:NSDictionary = ["alert":"","badge":"0","content-available":"1","sound":""]
+        
+        push.setData(data as [NSObject : AnyObject])
+        push.sendPushInBackgroundWithBlock { (bool, error) -> Void in
+            
+        }
         
         
     }

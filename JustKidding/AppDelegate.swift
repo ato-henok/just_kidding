@@ -21,11 +21,80 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
         Parse.setApplicationId("65TYBuSV4wiiTh2mdfzimCJ1ytilJ1BQVdGjkv7Z", clientKey: "hy2WGSKdIY7hOl4v2ralS0nTfnlUnbjpj2FyOEps")
         
+        let notificationTypes:UIUserNotificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
+        
+        let notificationSettings:UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+        
+        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+        
         //PFFacebookUtils.initializeFacebook()
         
         
         return true
     }
+    
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+        let currentInstallation:PFInstallation = PFInstallation.currentInstallation()
+        currentInstallation.setDeviceTokenFromData(deviceToken)
+        currentInstallation.saveInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
+            
+        }
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        println(error.localizedDescription)
+    }
+    
+    
+//    func application(application: UIApplication, didReceiveRemoteNotification userInfo:NSDictionary!) {
+//        
+//       
+//        
+//        
+//    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+//        var notification:NSDictionary = userInfo.objectForKey("aps") as! NSDictionary
+//        
+//        if notification.objectForKey("content-available"){
+//            if notification.objectForKey("content-available")?.isEqualToNumber(1){
+//                NSNotificationCenter.defaultCenter().postNotificationName("sendNewOnStage", object: nil)
+//            }
+//        }else{
+//            
+//            
+//            PFPush.handlePush(userInfo)
+//            
+//      }
+        
+        
+        //var notification = [userInfo["aps"]?["content-available"]] as? Int
+        var notification = ((userInfo["aps"] as? NSDictionary) ?? NSDictionary())["content-available"] as? Int
+        
+    
+        
+        if (notification != nil){
+            
+            if notification == 1{
+                NSNotificationCenter.defaultCenter().postNotificationName("sendNewOnStage", object: nil)
+            }
+            
+        }else{
+            
+            PFPush.handlePush(userInfo)
+            
+            
+        }
+        
+    }
+    
+    
     
     func application(application: UIApplication,
         openURL url: NSURL,
