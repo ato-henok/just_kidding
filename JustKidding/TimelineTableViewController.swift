@@ -621,6 +621,74 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
     }
     
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        
+        var currentuser = PFUser.currentUser()
+        var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+        
+        if(joke.objectForKey("senderId") as? NSString == currentuser!.objectId){
+        
+            let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
+            println("Delete button tapped")
+            
+            if(currentuser != nil){
+                
+                    
+                    joke.deleteInBackgroundWithBlock({ (bool, error) -> Void in
+                        
+                        if(error == nil){
+                            println("User joke deleted!")
+                        }else{
+                            println("Error deleting joke")
+                        }
+                        
+                    })
+                }
+            }
+        
+        delete.backgroundColor = UIColor.redColor()
+            
+            return [delete]
+        }
+        
+        
+        let flag = UITableViewRowAction(style: .Normal, title: "Flag") { action, index in
+            println("Flag button tapped")
+            
+            if(currentuser != nil){
+                
+                var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+                
+                joke.incrementKey("redFlags")
+                joke.saveInBackgroundWithBlock({ (bool, error) -> Void in
+                    if(error == nil){
+                        println("Joke flagged!")
+                    }else{
+                        println("Error flagging joke")
+                    }
+                })
+            }
+            
+            
+            
+        }
+        flag.backgroundColor = UIColor.orangeColor()
+    
+    
+        return [flag]
+    }
+    
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // the cells you would like the actions to appear needs to be editable
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        // you need to implement this method too or you can't swipe to display the actions
+    }
+    
     //########################################################
     
    
