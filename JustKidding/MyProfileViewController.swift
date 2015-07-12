@@ -803,7 +803,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                         
                         if(error == nil){
                             println("User joke deleted!")
-                            self.loadData()
+                            self.loadEntriesData()
                         }else{
                             println("Error deleting joke")
                         }
