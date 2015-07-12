@@ -264,6 +264,9 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
         
         return (newLength > 240) ? false : true
     }
+    
+    
+    
 
     
     /*

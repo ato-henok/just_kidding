@@ -639,6 +639,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                         
                         if(error == nil){
                             println("User joke deleted!")
+                            self.loadData()
                         }else{
                             println("Error deleting joke")
                         }
