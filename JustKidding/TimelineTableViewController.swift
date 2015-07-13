@@ -8,8 +8,9 @@
 
 import UIKit
 import Parse
+import iAd
 
-class TimelineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimelineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ADBannerViewDelegate{
    /*
     override func prefersStatusBarHidden() -> Bool {
         return true
@@ -23,7 +24,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     var jokeObj = PFObject(className: "Jokes")
     var senderName = NSString()
     
+    @IBOutlet var adBannerView: ADBannerView?
     @IBOutlet var tableView: UITableView!
+
+    
     
     // Load
     
@@ -267,6 +271,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.canDisplayBannerAds = true
+        self.adBannerView?.delegate = self
+        self.adBannerView?.hidden = true
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadData", name: "sendNewOnStage", object: nil)
         
@@ -690,9 +698,36 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         // you need to implement this method too or you can't swipe to display the actions
     }
     
+    
+    
+    //ADS
+    func bannerViewWillLoadAd(banner: ADBannerView!) {
+        
+    }
+    
+    
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        self.adBannerView?.hidden = false
+    }
+    
+    
+    func bannerViewActionDidFinish(banner: ADBannerView!) {
+        
+    }
+    
+    
+    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
+        
+        return true
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        self.adBannerView?.hidden = true
+    }
+    
     //########################################################
     
-   
+    
 
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
