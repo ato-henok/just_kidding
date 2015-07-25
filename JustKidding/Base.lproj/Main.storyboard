@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ne7-zf-yEE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ne7-zf-yEE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -616,15 +616,17 @@
                                                         <rect key="frame" x="0.0" y="-12" width="800" height="100"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gZM-bI-GFA">
-                                                    <rect key="frame" x="8" y="89" width="241" height="30"/>
-                                                    <state key="normal" title="User_Name">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wg0-m0-gg9">
+                                                    <rect key="frame" x="8" y="93" width="155" height="30"/>
+                                                    <state key="normal" title="Username">
                                                         <color key="titleColor" red="0.72191888150000005" green="0.13405782920000001" blue="0.747750947" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="wg0-m0-gg9" firstAttribute="top" secondItem="LEQ-0I-2s5" secondAttribute="top" constant="93" id="5JP-8Q-1dw"/>
+                                                <constraint firstItem="wg0-m0-gg9" firstAttribute="leading" secondItem="LEQ-0I-2s5" secondAttribute="leading" constant="8" id="BNX-PV-7BM"/>
                                                 <constraint firstItem="wVJ-cz-TGW" firstAttribute="leading" secondItem="LEQ-0I-2s5" secondAttribute="leading" constant="8" id="EU6-t9-Sib"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="RUA-ag-cd5" secondAttribute="trailing" constant="-7" id="KcR-2r-cun"/>
                                                 <constraint firstAttribute="bottom" secondItem="wVJ-cz-TGW" secondAttribute="bottom" constant="54" id="M3C-f4-N6w"/>
@@ -640,7 +642,7 @@
                                             <outlet property="likesCountLabel" destination="RUA-ag-cd5" id="ntw-Zb-RBh"/>
                                             <outlet property="roseBtn" destination="Zpj-MZ-n8L" id="1c4-F5-4oE"/>
                                             <outlet property="tomatoBtn" destination="PKo-A5-rWK" id="00Z-6X-8Og"/>
-                                            <outlet property="usernameLabel" destination="gZM-bI-GFA" id="jwP-vu-caa"/>
+                                            <outlet property="usernameBtn" destination="wg0-m0-gg9" id="eHI-gb-9zb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -724,20 +726,6 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkd-oI-Nch">
-                                                    <rect key="frame" x="10" y="96" width="226" height="16"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="Q94-Ta-x6G"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <state key="normal" title="username_btn">
-                                                        <color key="titleColor" red="0.72191888150000005" green="0.13405782920000001" blue="0.747750947" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="1" y="96" width="320" height="16"/>
-                                                    </variation>
-                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DqJ-op-QoW">
                                                     <rect key="frame" x="468" y="114" width="34" height="30"/>
                                                     <constraints>
@@ -787,6 +775,20 @@
                                                         <rect key="frame" x="0.0" y="-12" width="400" height="100"/>
                                                     </variation>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkd-oI-Nch">
+                                                    <rect key="frame" x="10" y="96" width="226" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="Q94-Ta-x6G"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <state key="normal" title="username_btn">
+                                                        <color key="titleColor" red="0.72191888150000005" green="0.13405782920000001" blue="0.747750947" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="1" y="96" width="320" height="16"/>
+                                                    </variation>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="hRl-iI-29h" firstAttribute="top" secondItem="Mkd-oI-Nch" secondAttribute="bottom" constant="2" id="2AP-6z-h8w"/>
@@ -1168,8 +1170,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="b4q-ko-Zwa"/>
-        <segue reference="d90-fe-fE4"/>
-        <segue reference="rwv-az-Tkm"/>
-        <segue reference="H6V-i2-6AX"/>
+        <segue reference="Mde-ke-jlK"/>
+        <segue reference="ML2-nt-bpS"/>
+        <segue reference="xJq-qL-SRs"/>
     </inferredMetricsTieBreakers>
 </document>

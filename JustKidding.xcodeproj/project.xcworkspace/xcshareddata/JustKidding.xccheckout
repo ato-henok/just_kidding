@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>E993E7F4-819C-473B-839A-C62056ECDA90</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>JustKidding</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>9FB80D0A9D657F610E6254C27FAB9DD1F23207F9</key>
 		<string>https://bitbucket.org/henokweldemicael/jk_ios.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>JustKidding.xcodeproj/project.xcworkspace</string>
+	<string>JustKidding.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>9FB80D0A9D657F610E6254C27FAB9DD1F23207F9</key>

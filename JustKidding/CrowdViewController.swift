@@ -281,7 +281,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         //********************
         
-        cell.usernameLabel.setTitle(joke.objectForKey("senderName")?.string, forState: UIControlState.Normal)
+        //cell.usernameLabel.setTitle(joke.objectForKey("senderName")?.string, forState: UIControlState.Normal)
+        cell.usernameBtn.setTitle(joke.objectForKey("senderName") as? String, forState: UIControlState.Normal)
+        
+        
         //cell.usernameLabel.backgroundColor = UIColor.purpleColor()
         //cell.usernameLabel.tintColor = UIColor.purpleColor()
         
@@ -308,27 +311,27 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Update the Like and Dislike icons
         
         if currentUser != nil {
-        
-        if(likesArray.containsObject(currentUser!.objectId!)){
             
-            cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
-            cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
-        }else if(dislikesArray.containsObject(currentUser!.objectId!)){
-            cell.tomatoBtn.setBackgroundImage(tomato_selected, forState: .Normal)
-            cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
-        }else{
-            cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
-            cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
-        }
-        
-        // Update favorite icon
-        
-        if(self.favArray.containsObject(joke.objectId!)){
-            cell.favBtn.setBackgroundImage(fav_selected, forState: .Normal)
-        }else{
-            cell.favBtn.setBackgroundImage(fav_empty, forState: .Normal)
-        }
-        
+            if(likesArray.containsObject(currentUser!.objectId!)){
+                
+                cell.roseBtn.setBackgroundImage(rose_selected, forState: UIControlState.Normal)
+                cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+            }else if(dislikesArray.containsObject(currentUser!.objectId!)){
+                cell.tomatoBtn.setBackgroundImage(tomato_selected, forState: .Normal)
+                cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
+            }else{
+                cell.roseBtn.setBackgroundImage(rose_empty, forState: .Normal)
+                cell.tomatoBtn.setBackgroundImage(tomato_empty, forState: .Normal)
+            }
+            
+            // Update favorite icon
+            
+            if(self.favArray.containsObject(joke.objectId!)){
+                cell.favBtn.setBackgroundImage(fav_selected, forState: .Normal)
+            }else{
+                cell.favBtn.setBackgroundImage(fav_empty, forState: .Normal)
+            }
+            
         }
         
         
@@ -345,18 +348,18 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.favBtn.addTarget(self, action: "favBtnClicked:", forControlEvents: .TouchUpInside)
         
         // Username label clicked
-        cell.usernameLabel.tag = indexPath.row
-        cell.usernameLabel.addTarget(self, action: "nameLabelClicked:", forControlEvents: .TouchUpInside)
-            
-        
-        
-       
+        cell.usernameBtn.tag = indexPath.row
+        cell.usernameBtn.addTarget(self, action: "nameLabelClicked:", forControlEvents: .TouchUpInside)
         
         
         
-
         
-
+        
+        
+        
+        
+        
+        
         
         
         return cell
@@ -364,6 +367,17 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //########################################################
     //functions for Like, Dislke, and Favorite buttons
+    
+    
+    
+    
+//    @IBAction func usernameBtnTapped(sender: UIButton) {
+//        println("Username Btn Tapped")
+//        
+//    
+//    }
+    
+    
     
     func nameLabelClicked(sender: UIButton!) {
         
@@ -411,39 +425,39 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             
         }else{
-        
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        
-        var likersArray = joke.objectForKey("likersArray") as! NSArray
-        
-        var objectId:NSString = PFUser.currentUser()!.objectId!
-        if(!(likersArray.containsObject(objectId))){
             
-            joke.addObject(objectId, forKey: "likersArray")
-            joke.removeObject(objectId, forKey: "dislikersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
-                if(error == nil){
-                    println("_Rose saved")
-                }else{
-                    println("_Rose error")
-                }
+            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            
+            var likersArray = joke.objectForKey("likersArray") as! NSArray
+            
+            var objectId:NSString = PFUser.currentUser()!.objectId!
+            if(!(likersArray.containsObject(objectId))){
                 
-            })
-            
-        }else if((likersArray.containsObject(objectId))){
-            
-            joke.removeObject(objectId, forKey: "likersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
-                if(error == nil){
-                    println("_Rose saved")
-                }else{
-                    println("_Rose error")
-                }
+                joke.addObject(objectId, forKey: "likersArray")
+                joke.removeObject(objectId, forKey: "dislikersArray")
+                joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        println("_Rose saved")
+                    }else{
+                        println("_Rose error")
+                    }
+                    
+                })
                 
-            })
-            
-        }
-        self.tableView.reloadData()
+            }else if((likersArray.containsObject(objectId))){
+                
+                joke.removeObject(objectId, forKey: "likersArray")
+                joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        println("_Rose saved")
+                    }else{
+                        println("_Rose error")
+                    }
+                    
+                })
+                
+            }
+            self.tableView.reloadData()
             
         }
     }
@@ -467,35 +481,35 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             
         }else{
-        
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
-        
-        var objectId:NSString = PFUser.currentUser()!.objectId!
-        
-        if(!(dislikersArray.containsObject(objectId))){
-            joke.addObject(objectId, forKey: "dislikersArray")
-            joke.removeObject(objectId, forKey: "likersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
-                if(error == nil){
-                    println("Tomato saved")
-                }else{
-                    println("Tomato error")
-                }
-                
-            })
-        }else if((dislikersArray.containsObject(objectId))){
-            joke.removeObject(objectId, forKey: "dislikersArray")
-            joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
-                if(error == nil){
-                    println("_Tomato saved")
-                }else{
-                    println("_Tomato error")
-                }
-                
-            })
-        }
-        self.tableView.reloadData()
+            
+            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
+            
+            var objectId:NSString = PFUser.currentUser()!.objectId!
+            
+            if(!(dislikersArray.containsObject(objectId))){
+                joke.addObject(objectId, forKey: "dislikersArray")
+                joke.removeObject(objectId, forKey: "likersArray")
+                joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        println("Tomato saved")
+                    }else{
+                        println("Tomato error")
+                    }
+                    
+                })
+            }else if((dislikersArray.containsObject(objectId))){
+                joke.removeObject(objectId, forKey: "dislikersArray")
+                joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        println("_Tomato saved")
+                    }else{
+                        println("_Tomato error")
+                    }
+                    
+                })
+            }
+            self.tableView.reloadData()
             
         }
     }
@@ -519,38 +533,38 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             
         }else{
-        
-        
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        var jokeObjectId = joke.objectId
-        
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
-        
-        // Check if the joke is already in favorited
-        
-        if(self.favArray.containsObject(jokeObjectId!)){
-            relation.removeObject(joke)
-            PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
-                if(error == nil){
-                    println("_Joke un-favorited")
-                }else{
-                    println("_Un-favorite error")
-                }
-            })
             
-        }else{
-            relation.addObject(joke)
-            PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
-                if(error == nil){
-                    println("_Joke favorited")
-                    
-                }else{
-                    println("_Favorite error")
-                }
-            })
-        }
-        
-        self.tableView.reloadData()
+            
+            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            var jokeObjectId = joke.objectId
+            
+            var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+            
+            // Check if the joke is already in favorited
+            
+            if(self.favArray.containsObject(jokeObjectId!)){
+                relation.removeObject(joke)
+                PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        println("_Joke un-favorited")
+                    }else{
+                        println("_Un-favorite error")
+                    }
+                })
+                
+            }else{
+                relation.addObject(joke)
+                PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        println("_Joke favorited")
+                        
+                    }else{
+                        println("_Favorite error")
+                    }
+                })
+            }
+            
+            self.tableView.reloadData()
             
         }
     }
@@ -652,8 +666,8 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         // you need to implement this method too or you can't swipe to display the actions
     }
-
     
+
     
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
