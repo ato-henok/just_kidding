@@ -8,8 +8,9 @@
 
 import UIKit
 import Parse
+import iAd
 
-class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ADBannerViewDelegate{
     
     var timelineData:NSMutableArray = NSMutableArray()
     var favArray:NSMutableArray = NSMutableArray()
@@ -19,6 +20,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var senderName = NSString()
     
+    @IBOutlet var adBannerView: ADBannerView?
     @IBOutlet var tableView: UITableView!
     
     // Load
@@ -235,6 +237,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.canDisplayBannerAds = true
+        self.adBannerView?.delegate = self
+        self.adBannerView?.hidden = true
+        
         self.tableView.registerClass(CrowdCell.self, forCellReuseIdentifier: "groupcell")
         
         
@@ -390,12 +396,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
+          
             
         }else{
             
@@ -417,13 +418,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
-            
+           
         }else{
             
             var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -473,13 +468,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
-            
+          
         }else{
             
             var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -525,13 +514,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
-            
+           
         }else{
             
             
@@ -667,7 +650,34 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // you need to implement this method too or you can't swipe to display the actions
     }
     
-
+    
+    
+    //ADS: import, delegate, viewDidLOAD
+    func bannerViewWillLoadAd(banner: ADBannerView!) {
+        
+    }
+    
+    
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        self.adBannerView?.hidden = false
+    }
+    
+    
+    func bannerViewActionDidFinish(banner: ADBannerView!) {
+        
+    }
+    
+    
+    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
+        
+        return true
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        self.adBannerView?.hidden = true
+    }
+    
+    //########################################################
     
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

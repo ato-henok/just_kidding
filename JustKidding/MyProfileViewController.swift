@@ -320,12 +320,6 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             }
             
             
-            
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-                var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-                alert.show();
         
         }else{
             
@@ -344,6 +338,16 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
 
         self.tableView.registerClass(ProfileCell.self, forCellReuseIdentifier: "groupcell")
+        
+        //ADMIN
+        if(PFUser.currentUser()!.objectForKey("isAdmin")?.boolValue == true){
+            
+            self.notifyBtn.hidden = false
+            
+        }else{
+            
+            self.notifyBtn.hidden = true
+        }
         
         
         tableView.delegate = self
@@ -746,6 +750,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func notifyBtnCLicked(sender: UIButton!){
         
+        self.notifyBtn.hidden = false
         
         //Send push notification to all users that there is new content on Stage
         
@@ -756,6 +761,12 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         push.setData(data as [NSObject : AnyObject])
         push.sendPushInBackgroundWithBlock { (bool, error) -> Void in
+            
+            if(error == nil){
+                println("New jokes push sent to everyone.")
+            }else{
+                println("Error sending new jokes push")
+            }
             
         }
         

@@ -415,13 +415,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
-            
+           
         }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -431,6 +425,14 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
         
+//    }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+//    
+//    var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+//    alert.show();
+    
+    
+    
+    
     }
     
     func roseBtnClicked(sender: UIButton!) {
@@ -444,13 +446,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
-            
+           
         }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -500,13 +496,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             signinUser()
             
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
-            
-            
+           
         }else{
         
         var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
@@ -551,12 +541,6 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             
             signinUser()
-            
-            
-        }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
-            
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
-            alert.show();
             
             
         }else{
@@ -700,7 +684,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     
     
-    //ADS
+    //ADS: import, delegate, viewDidLOAD
     func bannerViewWillLoadAd(banner: ADBannerView!) {
         
     }

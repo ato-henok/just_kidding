@@ -100,15 +100,26 @@ class SettingViewController: UIViewController{
     
     func changePasswordClicked(sender: UIButton!){
         
-        PFUser.requestPasswordResetForEmailInBackground(PFUser.currentUser()!.email!, block: { (success:Bool, error:NSError?) -> Void in
-            if(error == nil){
-                var alert = UIAlertView(title: "Password Reset", message: "Password reset link has been sent to your email!", delegate: nil, cancelButtonTitle: "Aight")
-                alert.show()
-                println("Password Reset Link Sent!")
-            }else{
-                println("Password Reset Link Not sent.")
-            }
-        })
+        if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
+            
+                var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+                alert.show();
+            
+        }else{
+            
+            PFUser.requestPasswordResetForEmailInBackground(PFUser.currentUser()!.email!, block: { (success:Bool, error:NSError?) -> Void in
+                if(error == nil){
+                    var alert = UIAlertView(title: "Password Reset", message: "Password reset link has been sent to your email!", delegate: nil, cancelButtonTitle: "Aight")
+                    alert.show()
+                    println("Password Reset Link Sent!")
+                }else{
+                    println("Password Reset Link Not sent.")
+                }
+            })
+            
+        }
+        
+        
         
     }
     
