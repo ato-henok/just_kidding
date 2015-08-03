@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var currentInstallation:PFInstallation = PFInstallation.currentInstallation()
         currentInstallation.addUniqueObject("newJokes", forKey: "channels")
-        
+        currentInstallation.addUniqueObject(PFUser.currentUser()!, forKey: "user")
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
             
