@@ -27,6 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
         
+//        
+//        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+//        
+//        [currentInstallation addUniqueObject:@"Hi" forKey:@"channels"];
+//        [currentInstallation saveInBackground];
+        
+      
+        
         //PFFacebookUtils.initializeFacebook()
         
         
@@ -39,9 +47,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
-        let currentInstallation:PFInstallation = PFInstallation.currentInstallation()
+        var currentInstallation:PFInstallation = PFInstallation.currentInstallation()
+        currentInstallation.addUniqueObject("newJokes", forKey: "channels")
+        
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
+            
+            if(error == nil){
+                println("Installation saved in appDelegate")
+            }else{
+                println("Installation did not save in appDelegate")
+            }
             
         }
     }

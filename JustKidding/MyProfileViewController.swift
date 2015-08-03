@@ -340,14 +340,22 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         self.tableView.registerClass(ProfileCell.self, forCellReuseIdentifier: "groupcell")
         
         //ADMIN
-        if(PFUser.currentUser()!.objectForKey("isAdmin")?.boolValue == true){
+        
+        if(PFUser.currentUser() != nil){
+            if(PFUser.currentUser()!.objectForKey("isAdmin")?.boolValue == true){
+                
+                self.notifyBtn.hidden = false
+                
+            }else{
+                
+                self.notifyBtn.hidden = true
+            }
             
-            self.notifyBtn.hidden = false
             
         }else{
-            
             self.notifyBtn.hidden = true
         }
+        
         
         
         tableView.delegate = self
@@ -699,10 +707,11 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                             
                             var pushQuery:PFQuery = PFInstallation.query()!
                             pushQuery.whereKey("user", equalTo: author!)
-                            
                             var push:PFPush = PFPush()
                             push.setQuery(pushQuery)
                             
+                            //push.setChannel("youreOnStage")
+                            println("Check1")
                             push.setMessage("Congrats! You are featured on the Stage!")
                             
                             push.sendPushInBackgroundWithBlock({ (bool, error) -> Void in
@@ -754,21 +763,21 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         //Send push notification to all users that there is new content on Stage
         
+        var pushQuery:PFQuery = PFInstallation.query()!
+        pushQuery.whereKey("channels", equalTo: "newJokes")
         var push:PFPush = PFPush()
-        push.setChannel("NewOnStagePush")
+        push.setQuery(pushQuery)
         
-        var data:NSDictionary = ["alert":"","badge":"0","content-available":"1","sound":""]
+        println("Check1")
+        push.setMessage("New jokes on Stage")
         
-        push.setData(data as [NSObject : AnyObject])
-        push.sendPushInBackgroundWithBlock { (bool, error) -> Void in
-            
+        push.sendPushInBackgroundWithBlock({ (bool, error) -> Void in
             if(error == nil){
-                println("New jokes push sent to everyone.")
+                println("New jokes push sent")
             }else{
-                println("Error sending new jokes push")
+                println("Error sending mew jokes push")
             }
-            
-        }
+        })
         
         
     }
