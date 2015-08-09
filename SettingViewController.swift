@@ -133,14 +133,16 @@ class SettingViewController: UIViewController{
 
     
     func logoutClicked(sender: UIButton!){
-        
+        //
         PFUser.logOut()
         println("User logged out!")
         println("Current User:")
         println(PFUser.currentUser()?.username)
         println("***********")
+        //self.performSegueWithIdentifier("showStageAfterLogout", sender: self)
         
     }
+   
     
 
 }

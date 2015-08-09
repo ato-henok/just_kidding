@@ -140,6 +140,15 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                         println("Login success!")
                     }else{
                         println(error)
+                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                            
+                            self.presentViewController(loginAlert, animated: true, completion: nil)
+                            
+                        }))
+                        
+                        self.presentViewController(errorAlert, animated: true, completion: nil)
                     }
                     
                     
@@ -208,6 +217,15 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                         println("New user created")
                     }else{
                         println(error)
+                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                            
+                            self.presentViewController(signupAlert, animated: true, completion: nil)
+                            
+                        }))
+                        
+                        self.presentViewController(errorAlert, animated: true, completion: nil)
                     }
                 })
                 
