@@ -18,7 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-  
+        
+        application.statusBarHidden = false
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
+        var navigationBarAppearace = UINavigationBar.appearance()
+        // change navigation item title color
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
+        
+        
         Parse.setApplicationId("65TYBuSV4wiiTh2mdfzimCJ1ytilJ1BQVdGjkv7Z", clientKey: "hy2WGSKdIY7hOl4v2ralS0nTfnlUnbjpj2FyOEps")
         
         let notificationTypes:UIUserNotificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound

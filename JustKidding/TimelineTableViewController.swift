@@ -269,7 +269,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidAppear(animated: Bool) {
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.purpleColor()
+        self.navigationController?.navigationBar.barTintColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         
         // Load cell Data
@@ -289,6 +289,8 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         self.canDisplayBannerAds = true
         self.adBannerView?.delegate = self
@@ -337,7 +339,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         //****************COLOR CODE*********
         if(joke.objectForKey("fromAdmin")?.boolValue == true){
-            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            //cell.jokeLabel.textColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
             cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
         }
         //********************
@@ -347,7 +349,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
      
         
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
 
        
@@ -576,6 +578,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Joke un-favorited")
+                    self.loadFavs()
                 }else{
                     println("_Un-favorite error")
                 }
@@ -586,7 +589,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
                     println("_Joke favorited")
-                   
+                    self.loadFavs()
                 }else{
                     println("_Favorite error")
                 }

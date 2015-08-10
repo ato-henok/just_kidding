@@ -236,7 +236,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidAppear(animated: Bool) {
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.purpleColor()
+        self.navigationController?.navigationBar.barTintColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         
         // Load cell Data
@@ -300,7 +300,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //****************COLOR CODE*********
         if(joke.objectForKey("fromAdmin")?.boolValue == true){
-            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            //cell.jokeLabel.textColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
             cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
         }
         //********************
@@ -309,11 +309,11 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.usernameBtn.setTitle(joke.objectForKey("senderName") as? String, forState: UIControlState.Normal)
         
         
-        //cell.usernameLabel.backgroundColor = UIColor.purpleColor()
-        //cell.usernameLabel.tintColor = UIColor.purpleColor()
+        //cell.usernameLabel.backgroundColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
+        //cell.usernameLabel.tintColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
         
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
         
         var likesArray = joke.objectForKey("likersArray") as! NSArray

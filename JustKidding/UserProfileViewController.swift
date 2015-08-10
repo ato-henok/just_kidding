@@ -336,7 +336,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         //****************COLOR CODE*********
         if(joke.objectForKey("fromAdmin")?.boolValue == true){
-            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            //cell.jokeLabel.textColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
             cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
         }
         //********************
@@ -345,7 +345,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
         
         

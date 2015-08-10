@@ -294,7 +294,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidAppear(animated: Bool) {
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.purpleColor()
+        self.navigationController?.navigationBar.barTintColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         
         PFUser.currentUser()?.fetch()
@@ -409,7 +409,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         //****************COLOR CODE*********
         if(joke.objectForKey("fromAdmin")?.boolValue == true){
-            //cell.jokeLabel.textColor = UIColor.purpleColor()
+            //cell.jokeLabel.textColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
             cell.jokeLabel.backgroundColor = UIColor(red:220.0/255.0, green:182.0/255.0,blue:222.0/255.0,alpha:1.0)
         }
         //********************
@@ -418,7 +418,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
         
         var likesArray = joke.objectForKey("likersArray") as! NSArray

@@ -24,7 +24,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         
-        self.entryTextView.layer.borderColor = UIColor.purpleColor().CGColor
+        self.entryTextView.layer.borderColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0).CGColor
         self.entryTextView.layer.borderWidth = 1
         self.entryTextView.layer.cornerRadius = 4
         self.entryTextView.delegate = self
