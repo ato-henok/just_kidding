@@ -35,14 +35,14 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Initially, remove what is already there
         self.timelineData.removeAllObjects()
         
-        var query = PFQuery(className: "Jokes")
+        let query = PFQuery(className: "Jokes")
         query.whereKey("isOnStage", equalTo: true)
         query.orderByDescending("featuredAt")
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) jokes on stage.")
+                print("\(objects!.count) jokes on stage.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -53,7 +53,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
         
@@ -63,15 +63,15 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     func loadFavs(){
         self.favArray.removeAllObjects()
         
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+        let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
-        var query:PFQuery = relation.query()!
+        let query:PFQuery = relation.query()!
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) user favorites.")
+                print("\(objects!.count) user favorites.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -80,7 +80,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 }
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
 
@@ -93,7 +93,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         //###########################################################################
         // Alert for Signing up or loggin in
         
-        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
         
         
         alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
@@ -101,7 +101,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             //********************************************************************
             
-            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             
             // Username textfield created with placeholder
             loginAlert.addTextFieldWithConfigurationHandler({
@@ -129,27 +129,27 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
                 let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
                 
-                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                PFUser.logInWithUsernameInBackground(usernameTextField.text!, password: passwordTextField.text!){ (user:PFUser?, error:NSError?) -> Void in
                     
                     if((user) != nil){
-                        println("Login success!")
-                        var installation:PFInstallation = PFInstallation.currentInstallation()
+                        print("Login success!")
+                        let installation:PFInstallation = PFInstallation.currentInstallation()
                         installation.addUniqueObject("NewOnStage", forKey: "channels")
                         installation["user"] = PFUser.currentUser()
                         installation.saveInBackgroundWithBlock({ (bool, error) -> Void in
                             if(error == nil){
-                                println("Subscribed to NewOnStage channel")
+                                print("Subscribed to NewOnStage channel")
                             }else{
-                                println("Error subscribing to NewOnStage channel")
+                                print("Error subscribing to NewOnStage channel")
                             }
                         })
                         
                         
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(loginAlert, animated: true, completion: nil)
                             
@@ -174,7 +174,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             //********************************************************************
-            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            let signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
             
             // Email textfield created with placeholder
             signupAlert.addTextFieldWithConfigurationHandler({
@@ -213,7 +213,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
                 
                 
-                var newUser:PFUser = PFUser()
+                let newUser:PFUser = PFUser()
                 newUser.email = emailTextField.text
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
@@ -221,25 +221,25 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                 newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
-                        println("New user created")
+                        print("New user created")
                         
-                        var installation:PFInstallation = PFInstallation.currentInstallation()
+                        let installation:PFInstallation = PFInstallation.currentInstallation()
                         installation.addUniqueObject("NewOnStage", forKey: "channels")
                         installation["user"] = PFUser.currentUser()
                         installation.saveInBackgroundWithBlock({ (bool, error) -> Void in
                             if(error == nil){
-                                println("Subscribed to NewOnStage channel")
+                                print("Subscribed to NewOnStage channel")
                             }else{
-                                println("Error subscribing to NewOnStage channel")
+                                print("Error subscribing to NewOnStage channel")
                             }
                         })
                         
                         
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(signupAlert, animated: true, completion: nil)
                             
@@ -275,9 +275,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Load cell Data
         
         PFUser.currentUser()?.fetch()
-        println("Current User:")
-        println(PFUser.currentUser()?.username)
-        println("************")
+        print("Current User:")
+        print(PFUser.currentUser()?.username)
+        print("************")
         
         self.loadData()
         if(PFUser.currentUser() != nil){
@@ -348,20 +348,20 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
      
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
 
        
-        var likesArray = joke.objectForKey("likersArray") as! NSArray
-        var dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
+        let likesArray = joke.objectForKey("likersArray") as! NSArray
+        let dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
        
-        var net = likesArray.count - dislikesArray.count
+        let net = likesArray.count - dislikesArray.count
         cell.likesCountLabel.text = String(net)
         
     
         
-        var currentUser = PFUser.currentUser()
+        let currentUser = PFUser.currentUser()
         
         let rose_selected = UIImage(named: "rose_selected.png") as UIImage!
         let rose_empty = UIImage(named: "rose_empty.png") as UIImage!
@@ -427,7 +427,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func nameLabelClicked(sender: UIButton!) {
         
-        println("Username label Clicked")
+        print("Username label Clicked")
         PFUser.currentUser()?.fetch()
         
         if(PFUser.currentUser() == nil){
@@ -438,7 +438,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
            
         }else{
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         self.senderName = joke.objectForKey("senderName") as! NSString
         self.performSegueWithIdentifier("showUserProfile", sender: self)
             
@@ -457,7 +457,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func roseBtnClicked(sender: UIButton!) {
       
-        println("Rose Btn Clicked")
+        print("Rose Btn Clicked")
         
         PFUser.currentUser()?.fetch()
         
@@ -469,20 +469,20 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
            
         }else{
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         
-        var likersArray = joke.objectForKey("likersArray") as! NSArray
+        let likersArray = joke.objectForKey("likersArray") as! NSArray
       
-        var objectId:NSString = PFUser.currentUser()!.objectId!
+        let objectId:NSString = PFUser.currentUser()!.objectId!
         if(!(likersArray.containsObject(objectId))){
             
             joke.addObject(objectId, forKey: "likersArray")
             joke.removeObject(objectId, forKey: "dislikersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Rose saved")
+                    print("_Rose saved")
                 }else{
-                    println("_Rose error")
+                    print("_Rose error")
                 }
                 
             })
@@ -492,9 +492,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             joke.removeObject(objectId, forKey: "likersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Rose saved")
+                    print("_Rose saved")
                 }else{
-                    println("_Rose error")
+                    print("_Rose error")
                 }
                 
             })
@@ -507,7 +507,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tomatoBtnClicked(sender: UIButton!) {
    
-        println("Tomato Btn Clicked")
+        print("Tomato Btn Clicked")
         
         PFUser.currentUser()?.fetch()
         
@@ -519,19 +519,19 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
            
         }else{
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
         
-        var objectId:NSString = PFUser.currentUser()!.objectId!
+        let objectId:NSString = PFUser.currentUser()!.objectId!
         
         if(!(dislikersArray.containsObject(objectId))){
             joke.addObject(objectId, forKey: "dislikersArray")
             joke.removeObject(objectId, forKey: "likersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("Tomato saved")
+                    print("Tomato saved")
                 }else{
-                    println("Tomato error")
+                    print("Tomato error")
                 }
                 
             })
@@ -539,9 +539,9 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             joke.removeObject(objectId, forKey: "dislikersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Tomato saved")
+                    print("_Tomato saved")
                 }else{
-                    println("_Tomato error")
+                    print("_Tomato error")
                 }
                 
             })
@@ -553,7 +553,7 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func favBtnClicked(sender: UIButton!) {
         
-        println("Favorite Btn Clicked")
+        print("Favorite Btn Clicked")
         
         PFUser.currentUser()?.fetch()
         
@@ -566,10 +566,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         }else{
         
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        var jokeObjectId = joke.objectId
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let jokeObjectId = joke.objectId
         
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+        let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
         // Check if the joke is already in favorited
         
@@ -577,10 +577,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             relation.removeObject(joke)
             PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Joke un-favorited")
+                    print("_Joke un-favorited")
                     self.loadFavs()
                 }else{
-                    println("_Un-favorite error")
+                    print("_Un-favorite error")
                 }
             })
             
@@ -588,10 +588,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
             relation.addObject(joke)
             PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Joke favorited")
+                    print("_Joke favorited")
                     self.loadFavs()
                 }else{
-                    println("_Favorite error")
+                    print("_Favorite error")
                 }
             })
         }
@@ -635,15 +635,15 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        var currentuser = PFUser.currentUser()
-        var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+        let currentuser = PFUser.currentUser()
+        let joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         if(joke.objectForKey("senderId") as? NSString == currentuser!.objectId){
         
             let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
-            println("Delete button tapped")
+            print("Delete button tapped")
             
             if(currentuser != nil){
                 
@@ -651,10 +651,10 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
                     joke.deleteInBackgroundWithBlock({ (bool, error) -> Void in
                         
                         if(error == nil){
-                            println("User joke deleted!")
+                            print("User joke deleted!")
                             self.loadData()
                         }else{
-                            println("Error deleting joke")
+                            print("Error deleting joke")
                         }
                         
                     })
@@ -668,18 +668,18 @@ class TimelineTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         
         let flag = UITableViewRowAction(style: .Normal, title: "Flag") { action, index in
-            println("Flag button tapped")
+            print("Flag button tapped")
             
             if(currentuser != nil){
                 
-                var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+                let joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
                 
                 joke.incrementKey("redFlags")
                 joke.saveInBackgroundWithBlock({ (bool, error) -> Void in
                     if(error == nil){
-                        println("Joke flagged!")
+                        print("Joke flagged!")
                     }else{
-                        println("Error flagging joke")
+                        print("Error flagging joke")
                     }
                 })
             }

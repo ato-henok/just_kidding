@@ -29,13 +29,13 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Initially, remove what is already there
         self.timelineData.removeAllObjects()
         
-        var query = PFQuery(className: "Jokes")
+        let query = PFQuery(className: "Jokes")
         query.orderByDescending("createdAt")
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) jokes on crowd.")
+                print("\(objects!.count) jokes on crowd.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -46,7 +46,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
         
@@ -57,15 +57,15 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     func loadFavs(){
         self.favArray.removeAllObjects()
         
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+        let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
-        var query:PFQuery = relation.query()!
+        let query:PFQuery = relation.query()!
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) user favorites.")
+                print("\(objects!.count) user favorites.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -74,7 +74,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
         
@@ -86,7 +86,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         //###########################################################################
         // Alert for Signing up or loggin in
         
-        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
         
         
         alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
@@ -94,7 +94,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
             //********************************************************************
             
-            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             
             // Username textfield created with placeholder
             loginAlert.addTextFieldWithConfigurationHandler({
@@ -122,15 +122,15 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
                 let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
                 
-                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                PFUser.logInWithUsernameInBackground(usernameTextField.text!, password: passwordTextField.text!){ (user:PFUser?, error:NSError?) -> Void in
                     
                     if((user) != nil){
-                        println("Login success!")
+                        print("Login success!")
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(loginAlert, animated: true, completion: nil)
                             
@@ -155,7 +155,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             //********************************************************************
-            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            let signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
             
             // Email textfield created with placeholder
             signupAlert.addTextFieldWithConfigurationHandler({
@@ -194,7 +194,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
                 
                 
-                var newUser:PFUser = PFUser()
+                let newUser:PFUser = PFUser()
                 newUser.email = emailTextField.text
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
@@ -202,12 +202,12 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
-                        println("New user created")
+                        print("New user created")
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(signupAlert, animated: true, completion: nil)
                             
@@ -242,9 +242,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         // Load cell Data
         
         PFUser.currentUser()?.fetch()
-        println("Current User:")
-        println(PFUser.currentUser()?.username)
-        println("************")
+        print("Current User:")
+        print(PFUser.currentUser()?.username)
+        print("************")
         
         self.loadData()
         if(PFUser.currentUser() != nil){
@@ -312,18 +312,18 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         //cell.usernameLabel.backgroundColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
         //cell.usernameLabel.tintColor = UIColor(red:155.0/255.0, green:89.0/255.0,blue:182.0/255.0,alpha:1.0)
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
         
-        var likesArray = joke.objectForKey("likersArray") as! NSArray
-        var dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
+        let likesArray = joke.objectForKey("likersArray") as! NSArray
+        let dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
         
-        var net = likesArray.count - dislikesArray.count
+        let net = likesArray.count - dislikesArray.count
         
         cell.likesCountLabel.text = String(net)
         
-        var currentUser = PFUser.currentUser()
+        let currentUser = PFUser.currentUser()
         
         let rose_selected = UIImage(named: "rose_selected.png") as UIImage!
         let rose_empty = UIImage(named: "rose_empty.png") as UIImage!
@@ -405,7 +405,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func nameLabelClicked(sender: UIButton!) {
         
-        println("Username label Clicked")
+        print("Username label Clicked")
         
         PFUser.currentUser()?.fetch()
         
@@ -418,7 +418,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }else{
             
-            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
             self.senderName = joke.objectForKey("senderName") as! NSString
             self.performSegueWithIdentifier("showUserProfile", sender: self)
             
@@ -439,20 +439,20 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
            
         }else{
             
-            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
             
-            var likersArray = joke.objectForKey("likersArray") as! NSArray
+            let likersArray = joke.objectForKey("likersArray") as! NSArray
             
-            var objectId:NSString = PFUser.currentUser()!.objectId!
+            let objectId:NSString = PFUser.currentUser()!.objectId!
             if(!(likersArray.containsObject(objectId))){
                 
                 joke.addObject(objectId, forKey: "likersArray")
                 joke.removeObject(objectId, forKey: "dislikersArray")
                 joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                     if(error == nil){
-                        println("_Rose saved")
+                        print("_Rose saved")
                     }else{
-                        println("_Rose error")
+                        print("_Rose error")
                     }
                     
                 })
@@ -462,9 +462,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 joke.removeObject(objectId, forKey: "likersArray")
                 joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                     if(error == nil){
-                        println("_Rose saved")
+                        print("_Rose saved")
                     }else{
-                        println("_Rose error")
+                        print("_Rose error")
                     }
                     
                 })
@@ -477,7 +477,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tomatoBtnClicked(sender: UIButton!) {
         
-        println("Tomato Btn Clicked")
+        print("Tomato Btn Clicked")
         
         PFUser.currentUser()?.fetch()
         
@@ -489,19 +489,19 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
           
         }else{
             
-            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-            var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
+            let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            let dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
             
-            var objectId:NSString = PFUser.currentUser()!.objectId!
+            let objectId:NSString = PFUser.currentUser()!.objectId!
             
             if(!(dislikersArray.containsObject(objectId))){
                 joke.addObject(objectId, forKey: "dislikersArray")
                 joke.removeObject(objectId, forKey: "likersArray")
                 joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                     if(error == nil){
-                        println("Tomato saved")
+                        print("Tomato saved")
                     }else{
-                        println("Tomato error")
+                        print("Tomato error")
                     }
                     
                 })
@@ -509,9 +509,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 joke.removeObject(objectId, forKey: "dislikersArray")
                 joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                     if(error == nil){
-                        println("_Tomato saved")
+                        print("_Tomato saved")
                     }else{
-                        println("_Tomato error")
+                        print("_Tomato error")
                     }
                     
                 })
@@ -523,7 +523,7 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func favBtnClicked(sender: UIButton!) {
         
-        println("Favorite Btn Clicked")
+        print("Favorite Btn Clicked")
         
         PFUser.currentUser()?.fetch()
         
@@ -536,10 +536,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         }else{
             
             
-            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-            var jokeObjectId = joke.objectId
+            let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            let jokeObjectId = joke.objectId
             
-            var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+            let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
             
             // Check if the joke is already in favorited
             
@@ -547,9 +547,9 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 relation.removeObject(joke)
                 PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                     if(error == nil){
-                        println("_Joke un-favorited")
+                        print("_Joke un-favorited")
                     }else{
-                        println("_Un-favorite error")
+                        print("_Un-favorite error")
                     }
                 })
                 
@@ -557,10 +557,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                 relation.addObject(joke)
                 PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                     if(error == nil){
-                        println("_Joke favorited")
+                        print("_Joke favorited")
                         
                     }else{
-                        println("_Favorite error")
+                        print("_Favorite error")
                     }
                 })
             }
@@ -600,15 +600,15 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        var currentuser = PFUser.currentUser()
-        var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+        let currentuser = PFUser.currentUser()
+        let joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         if(joke.objectForKey("senderId") as? NSString == currentuser!.objectId){
             
             let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
-                println("Delete button tapped")
+                print("Delete button tapped")
                 
                 if(currentuser != nil){
                     
@@ -616,10 +616,10 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
                     joke.deleteInBackgroundWithBlock({ (bool, error) -> Void in
                         
                         if(error == nil){
-                            println("User joke deleted!")
+                            print("User joke deleted!")
                             self.loadData()
                         }else{
-                            println("Error deleting joke")
+                            print("Error deleting joke")
                         }
                         
                     })
@@ -633,18 +633,18 @@ class CrowdiewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         let flag = UITableViewRowAction(style: .Normal, title: "Flag") { action, index in
-            println("Flag button tapped")
+            print("Flag button tapped")
             
             if(currentuser != nil){
                 
-                var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+                let joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
                 
                 joke.incrementKey("redFlags")
                 joke.saveInBackgroundWithBlock({ (bool, error) -> Void in
                     if(error == nil){
-                        println("Joke flagged!")
+                        print("Joke flagged!")
                     }else{
-                        println("Error flagging joke")
+                        print("Error flagging joke")
                     }
                 })
             }

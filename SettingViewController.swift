@@ -37,7 +37,7 @@ class SettingViewController: UIViewController{
     
     func changeBioClicked(sender: UIButton!){
         
-        var changeBioAlert:UIAlertController = UIAlertController(title: "Bio", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        let changeBioAlert:UIAlertController = UIAlertController(title: "Bio", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
         
         changeBioAlert.addTextFieldWithConfigurationHandler({
             textField in
@@ -51,29 +51,29 @@ class SettingViewController: UIViewController{
             
             let bioTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
             
-            if((bioTextField.text as NSString).length == 0){
+            if((bioTextField.text! as NSString).length == 0){
                 
-                var alert = UIAlertView(title: "Oops!", message: "Bio cannot be empty. Pretty sure there is something badass about you.", delegate: nil, cancelButtonTitle: "Ok, thanks!")
+                let alert = UIAlertView(title: "Oops!", message: "Bio cannot be empty. Pretty sure there is something badass about you.", delegate: nil, cancelButtonTitle: "Ok, thanks!")
                 alert.show()
                 
                 
-            }else if ((bioTextField.text as NSString).length > 140){
-                var alert = UIAlertView(title: "Too Long!", message: "Bio is too long. Let's save that for your autobiography", delegate: nil, cancelButtonTitle: "Ok, whatever!")
+            }else if ((bioTextField.text! as NSString).length > 140){
+                let alert = UIAlertView(title: "Too Long!", message: "Bio is too long. Let's save that for your autobiography", delegate: nil, cancelButtonTitle: "Ok, whatever!")
                 alert.show()
                 
             }else{
             
-            var currentUser = PFUser.currentUser()
+            let currentUser = PFUser.currentUser()
             currentUser?.setValue(bioTextField.text, forKey: "aboutMe")
             currentUser?.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                 
                 if(error == nil){
                     
-                    println("Bio updated!")
+                    print("Bio updated!")
                     
                 }else{
                     
-                    println("Bio was not updated.")
+                    print("Bio was not updated.")
                     
                 }
                 
@@ -86,7 +86,7 @@ class SettingViewController: UIViewController{
         }))
         
         changeBioAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { alertAction in
-            println("Cancel button pressed");
+            print("Cancel button pressed");
             
         }))
         
@@ -102,18 +102,18 @@ class SettingViewController: UIViewController{
         
         if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
             
-                var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+                let alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
                 alert.show();
             
         }else{
             
             PFUser.requestPasswordResetForEmailInBackground(PFUser.currentUser()!.email!, block: { (success:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    var alert = UIAlertView(title: "Password Reset", message: "Password reset link has been sent to your email!", delegate: nil, cancelButtonTitle: "Aight")
+                    let alert = UIAlertView(title: "Password Reset", message: "Password reset link has been sent to your email!", delegate: nil, cancelButtonTitle: "Aight")
                     alert.show()
-                    println("Password Reset Link Sent!")
+                    print("Password Reset Link Sent!")
                 }else{
-                    println("Password Reset Link Not sent.")
+                    print("Password Reset Link Not sent.")
                 }
             })
             
@@ -135,10 +135,10 @@ class SettingViewController: UIViewController{
     func logoutClicked(sender: UIButton!){
         //
         PFUser.logOut()
-        println("User logged out!")
-        println("Current User:")
-        println(PFUser.currentUser()?.username)
-        println("***********")
+        print("User logged out!")
+        print("Current User:")
+        print(PFUser.currentUser()?.username)
+        print("***********")
         //self.performSegueWithIdentifier("showStageAfterLogout", sender: self)
         
     }

@@ -27,15 +27,15 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         // Initially, remove what is already there
         self.commentsArray.removeAllObjects()
         
-        var relation:PFRelation = self.commentEntry.relationForKey("associatedComments")
-        var query:PFQuery = relation.query()!
+        let relation:PFRelation = self.commentEntry.relationForKey("associatedComments")
+        let query:PFQuery = relation.query()!
         query.orderByDescending("likersArray")
 
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) comments.")
+                print("\(objects!.count) comments.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -46,7 +46,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
         
@@ -59,7 +59,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         //###########################################################################
         // Alert for Signing up or loggin in
         
-        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
         
         
         alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
@@ -67,7 +67,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             
             //********************************************************************
             
-            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             
             // Username textfield created with placeholder
             loginAlert.addTextFieldWithConfigurationHandler({
@@ -95,15 +95,15 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
                 let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
                 
-                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                PFUser.logInWithUsernameInBackground(usernameTextField.text!, password: passwordTextField.text!){ (user:PFUser?, error:NSError?) -> Void in
                     
                     if((user) != nil){
-                        println("Login success!")
+                        print("Login success!")
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(loginAlert, animated: true, completion: nil)
                             
@@ -128,7 +128,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             //********************************************************************
-            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            let signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
             
             // Email textfield created with placeholder
             signupAlert.addTextFieldWithConfigurationHandler({
@@ -167,7 +167,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
                 
                 
-                var newUser:PFUser = PFUser()
+                let newUser:PFUser = PFUser()
                 newUser.email = emailTextField.text
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
@@ -175,12 +175,12 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
-                        println("New user created")
+                        print("New user created")
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(signupAlert, animated: true, completion: nil)
                             
@@ -251,7 +251,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         }else{
             
             
-        var addCommentAlert:UIAlertController = UIAlertController(title: "Comment", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        let addCommentAlert:UIAlertController = UIAlertController(title: "Comment", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
         
         addCommentAlert.addTextFieldWithConfigurationHandler({
             textField in
@@ -267,14 +267,14 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             
             
             
-            if((commentTextField.text as NSString).length > 140 || (commentTextField.text as NSString).length == 0){
+            if((commentTextField.text! as NSString).length > 140 || (commentTextField.text! as NSString).length == 0){
                 
-                var alert = UIAlertView(title: "Oops!", message: "Comment has to be less than 140 characters and cannot be empty.", delegate: nil, cancelButtonTitle: "Go it!")
+                let alert = UIAlertView(title: "Oops!", message: "Comment has to be less than 140 characters and cannot be empty.", delegate: nil, cancelButtonTitle: "Go it!")
                 alert.show();
                 
             }else{
             
-            var newComment:PFObject = PFObject(className: "Comments")
+            let newComment:PFObject = PFObject(className: "Comments")
             newComment["comment"] = commentTextField.text
             newComment["commenterId"] = PFUser.currentUser()!.objectId
                 
@@ -291,24 +291,24 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 if(error == nil){
                     
-                    var relation = self.commentEntry.relationForKey("associatedComments") as PFRelation
+                    let relation = self.commentEntry.relationForKey("associatedComments") as PFRelation
                     relation.addObject(newComment)
                     self.commentEntry.saveInBackgroundWithBlock({ (sucess:Bool, error:NSError?) -> Void in
                         
                         if(error == nil){
                               //self.tableView.reloadData()
-                              println("New comment related and saved")
+                              print("New comment related and saved")
                               self.loadData()   
                             
                         }else{
                            
-                            println("Error relating new comment")
+                            print("Error relating new comment")
                         }
                     })
                     
                    
                 }else{
-                    println("Error with new comment")
+                    print("Error with new comment")
                 }
                 
             })
@@ -321,7 +321,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         }))
         
         addCommentAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { alertAction in
-            println("Cancel button pressed");
+            print("Cancel button pressed");
             
         }))
         
@@ -362,19 +362,19 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         cell.usernameLabel.text = (comment.objectForKey("commenterName") as! String)
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         
         cell.dateLabel.text = dateFormatter.stringFromDate(comment.createdAt!) as String
 
-        var likesArray = comment.objectForKey("likersArray") as! NSArray
+        let likesArray = comment.objectForKey("likersArray") as! NSArray
         
         cell.likesLabel.text = String(likesArray.count)
         
         let like_selected = UIImage(named: "like_selected.png") as UIImage!
         let like_empty = UIImage(named: "like_empty.png") as UIImage!
         
-        var likersArray = comment.objectForKey("likersArray") as! NSArray
+        let likersArray = comment.objectForKey("likersArray") as! NSArray
         
         if(PFUser.currentUser() != nil){
         
@@ -395,7 +395,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
 
     func likeBtnClicked(sender:UIButton!){
         
-        println("Like Btn Clicked")
+        print("Like Btn Clicked")
         
         
         if(PFUser.currentUser() == nil){
@@ -406,8 +406,8 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             
         }else{
         
-        var comment = self.commentsArray.objectAtIndex(sender.tag) as! PFObject
-        var likersArray = comment.objectForKey("likersArray") as! NSArray
+        let comment = self.commentsArray.objectAtIndex(sender.tag) as! PFObject
+        let likersArray = comment.objectForKey("likersArray") as! NSArray
         
         if(likersArray.containsObject(PFUser.currentUser()!.objectId!)){
             comment.removeObject(PFUser.currentUser()!.objectId!, forKey: "likersArray")
@@ -417,9 +417,9 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         comment.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
             if(error == nil){
-                println("_Like saved")
+                print("_Like saved")
             }else{
-                println("_Like error")
+                print("_Like error")
             }
             
         })
@@ -431,15 +431,15 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        var currentuser = PFUser.currentUser()
-        var joke = self.commentsArray.objectAtIndex(indexPath.row) as! PFObject
+        let currentuser = PFUser.currentUser()
+        let joke = self.commentsArray.objectAtIndex(indexPath.row) as! PFObject
         
         if(joke.objectForKey("commenterId") as? NSString == currentuser!.objectId){
             
             let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
-                println("Delete button tapped")
+                print("Delete button tapped")
                 
                 if(currentuser != nil){
                     
@@ -447,10 +447,10 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                     joke.deleteInBackgroundWithBlock({ (bool, error) -> Void in
                         
                         if(error == nil){
-                            println("User joke deleted!")
+                            print("User joke deleted!")
                             self.loadData()
                         }else{
-                            println("Error deleting joke")
+                            print("Error deleting joke")
                         }
                         
                     })
@@ -464,18 +464,18 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         let flag = UITableViewRowAction(style: .Normal, title: "Flag") { action, index in
-            println("Flag button tapped")
+            print("Flag button tapped")
             
             if(currentuser != nil){
                 
-                var joke = self.commentsArray.objectAtIndex(indexPath.row) as! PFObject
+                let joke = self.commentsArray.objectAtIndex(indexPath.row) as! PFObject
                 
                 joke.incrementKey("redFlags")
                 joke.saveInBackgroundWithBlock({ (bool, error) -> Void in
                     if(error == nil){
-                        println("Joke flagged!")
+                        print("Joke flagged!")
                     }else{
-                        println("Error flagging joke")
+                        print("Error flagging joke")
                     }
                 })
             }

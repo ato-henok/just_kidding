@@ -23,14 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
-        var navigationBarAppearace = UINavigationBar.appearance()
+        let navigationBarAppearace = UINavigationBar.appearance()
         // change navigation item title color
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
         
         
         Parse.setApplicationId("65TYBuSV4wiiTh2mdfzimCJ1ytilJ1BQVdGjkv7Z", clientKey: "hy2WGSKdIY7hOl4v2ralS0nTfnlUnbjpj2FyOEps")
         
-        let notificationTypes:UIUserNotificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
+        let notificationTypes:UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
         
         let notificationSettings:UIUserNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
         
@@ -56,23 +56,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
-        var currentInstallation:PFInstallation = PFInstallation.currentInstallation()
+        let currentInstallation:PFInstallation = PFInstallation.currentInstallation()
         currentInstallation.addUniqueObject("newJokes", forKey: "channels")
         currentInstallation.addUniqueObject(PFUser.currentUser()!, forKey: "user")
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
             
             if(error == nil){
-                println("Installation saved in appDelegate")
+                print("Installation saved in appDelegate")
             }else{
-                println("Installation did not save in appDelegate")
+                print("Installation did not save in appDelegate")
             }
             
         }
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        println(error.localizedDescription)
+        print(error.localizedDescription)
     }
     
     
@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //var notification = [userInfo["aps"]?["content-available"]] as? Int
-        var notification = ((userInfo["aps"] as? NSDictionary) ?? NSDictionary())["content-available"] as? Int
+        let notification = ((userInfo["aps"] as? NSDictionary) ?? NSDictionary())["content-available"] as? Int
         
     
         

@@ -52,7 +52,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
         //###########################################################################
         // Alert for Signing up or loggin in
         
-        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
         
         
         alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
@@ -60,7 +60,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             
             //********************************************************************
             
-            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             
             // Username textfield created with placeholder
             loginAlert.addTextFieldWithConfigurationHandler({
@@ -88,15 +88,15 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
                 let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
                 let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
                 
-                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                PFUser.logInWithUsernameInBackground(usernameTextField.text!, password: passwordTextField.text!){ (user:PFUser?, error:NSError?) -> Void in
                     
                     if((user) != nil){
-                        println("Login success!")
+                        print("Login success!")
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(loginAlert, animated: true, completion: nil)
                             
@@ -121,7 +121,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
         alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             //********************************************************************
-            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            let signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
             
             // Email textfield created with placeholder
             signupAlert.addTextFieldWithConfigurationHandler({
@@ -160,7 +160,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
                 let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
                 
                 
-                var newUser:PFUser = PFUser()
+                let newUser:PFUser = PFUser()
                 newUser.email = emailTextField.text
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
@@ -168,12 +168,12 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
                 newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
-                        println("New user created")
+                        print("New user created")
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(signupAlert, animated: true, completion: nil)
                             
@@ -205,7 +205,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
         
         PFUser.currentUser()?.fetch()
         
-        var currentUser = PFUser.currentUser()
+        let currentUser = PFUser.currentUser()
         
         if currentUser != nil{
             // Do stuff with the user
@@ -214,13 +214,13 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             
             if((entryTextView.text as NSString).length == 0){
                 
-                var alert = UIAlertView(title: "Oops!", message: "Joke cannot be empty, only your wallet/purse can. Come on!", delegate: nil, cancelButtonTitle: "Fine, you didn't have to be rude!")
+                let alert = UIAlertView(title: "Oops!", message: "Joke cannot be empty, only your wallet/purse can. Come on!", delegate: nil, cancelButtonTitle: "Fine, you didn't have to be rude!")
                 alert.show();
                 
             }else{
            
             
-            var joke = PFObject(className: "Jokes")
+            let joke = PFObject(className: "Jokes")
             joke["isOnStage"] = false
             joke["joke"] = entryTextView.text
             joke["redFlags"] = 0
@@ -239,21 +239,21 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
                 (success: Bool, error: NSError?) -> Void in
                 if (success) {
                     // The entry has been saved
-                    var relation = currentUser!.relationForKey("userJokes") as PFRelation
+                    let relation = currentUser!.relationForKey("userJokes") as PFRelation
                     relation.addObject(joke)
                     currentUser!.saveInBackgroundWithBlock {
                         (success: Bool, error: NSError?) -> Void in
                         if (success) {
-                            println("Joke Saved and related!")
+                            print("Joke Saved and related!")
                         } else {
                             // There was a problem, check error.description
-                            println(error)
+                            print(error)
                         }
                     }
                     
                 } else {
                     // There was a problem, check error.description
-                    println(error)
+                    print(error)
                 }
             }
             
@@ -264,7 +264,7 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
             
         }else if(PFUser.currentUser()?.objectForKey("emailVerified")?.boolValue == false){
             
-            var alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
+            let alert = UIAlertView(title: "Verify Email", message: "Verify your email before you interact!", delegate: nil, cancelButtonTitle: "OKAY,FINE!")
             alert.show();
             
             
@@ -278,8 +278,8 @@ class ComposeTableViewController: UIViewController, UITextViewDelegate {
     
     func textView(textView:UITextView, shouldChangeTextInRange range:NSRange, replacementText text: String) -> Bool{
         
-        var newLength:Int = (textView.text as NSString).length + (text as NSString).length - range.length
-        var remainingChar:Int = 240 - newLength
+        let newLength:Int = (textView.text as NSString).length + (text as NSString).length - range.length
+        let remainingChar:Int = 240 - newLength
         
         charRemaining.text = "\(remainingChar)"
         

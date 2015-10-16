@@ -33,14 +33,14 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     func loadFavData(){
         // Initially, remove what is already there
         self.timelineData.removeAllObjects()
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
-        var query = relation.query()
+        let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+        let query = relation.query()
         query?.orderByDescending("createdAt")
         query?.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) favorite jokes on profile")
+                print("\(objects!.count) favorite jokes on profile")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -51,7 +51,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
         
@@ -64,14 +64,14 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             
         
         self.timelineData.removeAllObjects()
-        var relation = PFUser.currentUser()!.relationForKey("userJokes") as PFRelation
-        var query = relation.query()
+        let relation = PFUser.currentUser()!.relationForKey("userJokes") as PFRelation
+        let query = relation.query()
         query?.orderByDescending("createdAt")
         query?.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) entries on profile")
+                print("\(objects!.count) entries on profile")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -82,7 +82,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.tableView.reloadData()
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
             
@@ -97,15 +97,15 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     func loadFavs(){
         self.favArray.removeAllObjects()
         
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+        let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
-        var query:PFQuery = relation.query()!
+        let query:PFQuery = relation.query()!
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("\(objects!.count) user favorites.")
+                print("\(objects!.count) user favorites.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
@@ -114,7 +114,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             } else {
                 // Log details of the failure
-                println("Error: \(error) \(error!.userInfo!)")
+                print("Error: \(error) \(error!.userInfo)")
             }
         }
         
@@ -136,7 +136,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         //###########################################################################
         // Alert for Signing up or loggin in
         
-        var alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert:UIAlertController = UIAlertController(title: "Welcome", message: "You need to signup or login in order to interact", preferredStyle: UIAlertControllerStyle.Alert)
         
         
         alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
@@ -144,7 +144,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             
             //********************************************************************
             
-            var loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let loginAlert:UIAlertController = UIAlertController(title: "Login", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             
             // Username textfield created with placeholder
             loginAlert.addTextFieldWithConfigurationHandler({
@@ -172,19 +172,19 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 let usernameTextField:UITextField = textFields.objectAtIndex(0) as! UITextField
                 let passwordTextField:UITextField = textFields.objectAtIndex(1)as! UITextField
                 
-                PFUser.logInWithUsernameInBackground(usernameTextField.text, password: passwordTextField.text){ (user:PFUser?, error:NSError?) -> Void in
+                PFUser.logInWithUsernameInBackground(usernameTextField.text!, password: passwordTextField.text!){ (user:PFUser?, error:NSError?) -> Void in
                     
                     if((user) != nil){
-                        println("Login success!")
+                        print("Login success!")
                         self.loadEntriesData()
                         self.usernameLabel.text = PFUser.currentUser()!.username
                         self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
                         
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(loginAlert, animated: true, completion: nil)
                             
@@ -209,7 +209,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         alert.addAction(UIAlertAction(title: "Signup", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             //********************************************************************
-            var signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
+            let signupAlert:UIAlertController = UIAlertController(title: "New Account", message: "Enter the following info to signup", preferredStyle: UIAlertControllerStyle.Alert)
             
             // Email textfield created with placeholder
             signupAlert.addTextFieldWithConfigurationHandler({
@@ -248,7 +248,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 let passwordTextField:UITextField = textFields.objectAtIndex(2) as! UITextField
                 
                 
-                var newUser:PFUser = PFUser()
+                let newUser:PFUser = PFUser()
                 newUser.email = emailTextField.text
                 newUser.username = usernameTextField.text
                 newUser.password = passwordTextField.text
@@ -256,15 +256,15 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                 newUser.setValue(false, forKey: "isAdmin")
                 newUser.signUpInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
                     if(success){
-                        println("New user created")
+                        print("New user created")
                         self.loadEntriesData()
                         self.usernameLabel.text = PFUser.currentUser()!.username
                         self.bioLabel.text = (PFUser.currentUser()!.objectForKey("aboutMe") as? String)
                     }else{
-                        println(error)
-                        var errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                        print(error)
+                        let errorAlert:UIAlertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction!) -> Void in
+                        errorAlert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
                             
                             self.presentViewController(signupAlert, animated: true, completion: nil)
                             
@@ -310,9 +310,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             
             
             
-                var jksOnStage = PFUser.currentUser()!.objectForKey("jokesOnStage") as! Int?
+                let jksOnStage = PFUser.currentUser()!.objectForKey("jokesOnStage") as! Int?
             
-                println(jksOnStage)
+                print(jksOnStage)
             
                 if(jksOnStage != nil){
                 
@@ -417,18 +417,18 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.usernameLabel.text = joke.objectForKey("senderName") as? String
         
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         cell.dateLabel.text = dateFormatter.stringFromDate(joke.createdAt!)
         
-        var likesArray = joke.objectForKey("likersArray") as! NSArray
-        var dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
+        let likesArray = joke.objectForKey("likersArray") as! NSArray
+        let dislikesArray = joke.objectForKey("dislikersArray") as! NSArray
         
-        var net = likesArray.count - dislikesArray.count
+        let net = likesArray.count - dislikesArray.count
         
         cell.counterLabel.text = String(net)
         
-        var currentUser = PFUser.currentUser()
+        let currentUser = PFUser.currentUser()
         
         let rose_selected = UIImage(named: "rose_selected.png") as UIImage!
         let rose_empty = UIImage(named: "rose_empty.png") as UIImage!
@@ -519,20 +519,20 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func roseBtnClicked(sender: UIButton!) {
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         
-        var likersArray = joke.objectForKey("likersArray") as! NSArray
+        let likersArray = joke.objectForKey("likersArray") as! NSArray
         
-        var objectId:NSString = PFUser.currentUser()!.objectId!
+        let objectId:NSString = PFUser.currentUser()!.objectId!
         if(!(likersArray.containsObject(objectId))){
             
             joke.addObject(objectId, forKey: "likersArray")
             joke.removeObject(objectId, forKey: "dislikersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Rose saved")
+                    print("_Rose saved")
                 }else{
-                    println("_Rose error")
+                    print("_Rose error")
                 }
                 
             })
@@ -542,9 +542,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             joke.removeObject(objectId, forKey: "likersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Rose saved")
+                    print("_Rose saved")
                 }else{
-                    println("_Rose error")
+                    print("_Rose error")
                 }
                 
             })
@@ -555,21 +555,21 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tomatoBtnClicked(sender: UIButton!) {
         
-        println("Tomato Btn Clicked")
+        print("Tomato Btn Clicked")
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        var dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let dislikersArray = joke.objectForKey("dislikersArray") as! NSArray
         
-        var objectId:NSString = PFUser.currentUser()!.objectId!
+        let objectId:NSString = PFUser.currentUser()!.objectId!
         
         if(!(dislikersArray.containsObject(objectId))){
             joke.addObject(objectId, forKey: "dislikersArray")
             joke.removeObject(objectId, forKey: "likersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("Tomato saved")
+                    print("Tomato saved")
                 }else{
-                    println("Tomato error")
+                    print("Tomato error")
                 }
                 
             })
@@ -577,9 +577,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             joke.removeObject(objectId, forKey: "dislikersArray")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Tomato saved")
+                    print("_Tomato saved")
                 }else{
-                    println("_Tomato error")
+                    print("_Tomato error")
                 }
                 
             })
@@ -589,13 +589,13 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func favBtnClicked(sender: UIButton!) {
         
-        println("Favorite Btn Clicked")
+        print("Favorite Btn Clicked")
         
         
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
-        var jokeObjectId = joke.objectId
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let jokeObjectId = joke.objectId
         
-        var relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
+        let relation = PFUser.currentUser()!.relationForKey("favoriteJokes") as PFRelation
         
         // Check if the joke is already in favorited
         
@@ -603,9 +603,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             relation.removeObject(joke)
             PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Joke un-favorited")
+                    print("_Joke un-favorited")
                 }else{
-                    println("_Un-favorite error")
+                    print("_Un-favorite error")
                 }
             })
             
@@ -613,10 +613,10 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             relation.addObject(joke)
             PFUser.currentUser()!.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("_Joke favorited")
+                    print("_Joke favorited")
                     
                 }else{
-                    println("_Favorite error")
+                    print("_Favorite error")
                 }
             })
         }
@@ -633,28 +633,28 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     //************ Admin Functions **********
     func banBtnClicked(sender: UIButton!) {
         
-        var confirmationAlert = UIAlertController(title: "Are you sure?", message: "User will be banned permanently", preferredStyle: UIAlertControllerStyle.Alert)
+        let confirmationAlert = UIAlertController(title: "Are you sure?", message: "User will be banned permanently", preferredStyle: UIAlertControllerStyle.Alert)
         
-        confirmationAlert.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action: UIAlertAction!) in
+        confirmationAlert.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action: UIAlertAction) in
             
-            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
             
-            var authorId = joke.objectForKey("senderId") as! String
-            var author = PFUser()
+            let authorId = joke.objectForKey("senderId") as! String
+            let author = PFUser()
             author.objectId = authorId
             
             author.deleteInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
                 
                 if(error == nil){
-                    println("User banned!")
+                    print("User banned!")
                 }
             }
             
         }))
         
-        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction) in
             
-            println("User not banned")
+            print("User not banned")
             
         }))
         
@@ -667,24 +667,24 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func delBtnClicked(sender: UIButton!) {
         
-        var confirmationAlert = UIAlertController(title: "Are you sure?", message: "Joke will be deleted permanently", preferredStyle: UIAlertControllerStyle.Alert)
+        let confirmationAlert = UIAlertController(title: "Are you sure?", message: "Joke will be deleted permanently", preferredStyle: UIAlertControllerStyle.Alert)
         
-        confirmationAlert.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action: UIAlertAction!) in
+        confirmationAlert.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action: UIAlertAction) in
             
-            var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+            let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
             
             joke.deleteInBackgroundWithBlock { (bool:Bool, error:NSError?) -> Void in
                 
                 if(error == nil){
-                    println("Joke deleted!")
+                    print("Joke deleted!")
                 }
             }
             
         }))
         
-        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction) in
             
-            println("Joke not deleted")
+            print("Joke not deleted")
             
         }))
         
@@ -698,51 +698,51 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     func ftBtnClicked(sender: UIButton!) {
         
        
-        var joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
+        let joke = self.timelineData.objectAtIndex(sender.tag) as! PFObject
         
         if(joke.objectForKey("isOnStage")! as! NSObject == false){
             
             sender.titleLabel?.text = "Un-Ft"
             joke.setValue(true, forKey: "isOnStage")
             
-            var todaysDate:NSDate = NSDate()
+            let todaysDate:NSDate = NSDate()
             joke.setValue(todaysDate, forKey: "featuredAt")
             
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("Joke FEATURED!")
+                    print("Joke FEATURED!")
                     
                     //Send push notification to author
                     
                     
-                    var  query = PFUser.query()
+                    let  query = PFUser.query()
                     query?.whereKey("objectId", equalTo: joke.objectForKey("senderId")!)
                     query?.getFirstObjectInBackgroundWithBlock({ (author, error) -> Void in
                         
                         if error == nil {
                             
-                            println("Query returned user to be featured")
+                            print("Query returned user to be featured")
                             
-                            var pushQuery:PFQuery = PFInstallation.query()!
+                            let pushQuery:PFQuery = PFInstallation.query()!
                             pushQuery.whereKey("user", equalTo: author!)
-                            var push:PFPush = PFPush()
+                            let push:PFPush = PFPush()
                             push.setQuery(pushQuery)
                             
                             //push.setChannel("youreOnStage")
-                            println("Check1")
+                            print("Check1")
                             push.setMessage("Congrats! You are featured on the Stage!")
                             
                             push.sendPushInBackgroundWithBlock({ (bool, error) -> Void in
                                 if(error == nil){
-                                    println("Congrats push sent")
+                                    print("Congrats push sent")
                                 }else{
-                                    println("Error sending congrats push")
+                                    print("Error sending congrats push")
                                 }
                             })
                             
                             
                         }else{
-                            println("Error querying author")
+                            print("Error querying author")
                         }
                     })
                     
@@ -750,7 +750,7 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     
                 }else{
-                    println("Error occured while featuring")
+                    print("Error occured while featuring")
                 }
             })
             
@@ -760,9 +760,9 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
             joke.setValue(false, forKey: "isOnStage")
             joke.saveInBackgroundWithBlock({ (bool:Bool, error:NSError?) -> Void in
                 if(error == nil){
-                    println("Joke UN-FEATURED!")
+                    print("Joke UN-FEATURED!")
                 }else{
-                    println("Error occured un-featuring")
+                    print("Error occured un-featuring")
                 }
             })
             
@@ -781,19 +781,19 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         //Send push notification to all users that there is new content on Stage
         
-        var pushQuery:PFQuery = PFInstallation.query()!
+        let pushQuery:PFQuery = PFInstallation.query()!
         pushQuery.whereKey("channels", equalTo: "newJokes")
-        var push:PFPush = PFPush()
+        let push:PFPush = PFPush()
         push.setQuery(pushQuery)
         
-        println("Check1")
+        print("Check1")
         push.setMessage("New jokes on Stage")
         
         push.sendPushInBackgroundWithBlock({ (bool, error) -> Void in
             if(error == nil){
-                println("New jokes push sent")
+                print("New jokes push sent")
             }else{
-                println("Error sending mew jokes push")
+                print("Error sending mew jokes push")
             }
         })
         
@@ -824,15 +824,15 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         
-        var currentuser = PFUser.currentUser()
-        var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+        let currentuser = PFUser.currentUser()
+        let joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
         
         if(joke.objectForKey("senderId") as? NSString == currentuser!.objectId){
             
             let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
-                println("Delete button tapped")
+                print("Delete button tapped")
                 
                 if(currentuser != nil){
                     
@@ -840,10 +840,10 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
                     joke.deleteInBackgroundWithBlock({ (bool, error) -> Void in
                         
                         if(error == nil){
-                            println("User joke deleted!")
+                            print("User joke deleted!")
                             self.loadEntriesData()
                         }else{
-                            println("Error deleting joke")
+                            print("Error deleting joke")
                         }
                         
                     })
@@ -857,18 +857,18 @@ class MyProfileViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         let flag = UITableViewRowAction(style: .Normal, title: "Flag") { action, index in
-            println("Flag button tapped")
+            print("Flag button tapped")
             
             if(currentuser != nil){
                 
-                var joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
+                let joke = self.timelineData.objectAtIndex(indexPath.row) as! PFObject
                 
                 joke.incrementKey("redFlags")
                 joke.saveInBackgroundWithBlock({ (bool, error) -> Void in
                     if(error == nil){
-                        println("Joke flagged!")
+                        print("Joke flagged!")
                     }else{
-                        println("Error flagging joke")
+                        print("Error flagging joke")
                     }
                 })
             }
